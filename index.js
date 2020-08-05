@@ -16,7 +16,7 @@ app.set('view engine', 'handlebars');
 
 // Middlewares
 app.use(express.static(path.resolve(__dirname, 'public')));
-app.use(require('body-parser').json());
+app.use('/api/*', require('body-parser').json());
 app.use('/api/*', require('cors')());
 
 
