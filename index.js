@@ -19,15 +19,27 @@ app.use(require('body-parser').json());
 
 
 // Routes.
-app.get('/', function(req, res){
-    res.render('index');
+app.get('/api/v1/auth/login', function(req, res){
+    res.json({
+        success: true,
+        payload: {
+
+        }
+    });
 });
 
 
 // custom 404 page
 app.use(function(req, res, next){
     res.status(404);
-    res.render('404');
+    res.json({
+        success: false,
+        error: {
+            code: 404,
+            type: 'NotFoundError',
+            message: 'The resource you were looking for was not found on this server.'
+        }
+    });
 });
 
 
@@ -35,7 +47,14 @@ app.use(function(req, res, next){
 app.use(function(err, req, res, next){
     console.error(err.stack);
     res.status(500);
-    res.render('500');
+    res.json({
+        success: false,
+        error: {
+            code: 500,
+            type: 'ServerError',
+            message: err.message
+        }
+    });
 });
 
 
