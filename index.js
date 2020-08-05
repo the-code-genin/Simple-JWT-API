@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const handlebars = require('express3-handlebars');
+const path = require('path');
 
 // Configure app.
 dotenv.config();
@@ -10,6 +11,11 @@ app.engine('handlebars', handlebars.create({ defaultLayout:'main' }).engine);
 app.set('view engine', 'handlebars');
 
 
+// Middlewares
+app.use(express.static(path.resolve(__dirname, 'public')));
+
+
+// Routes.
 app.get('/', function(req, res){
     res.render('index');
 });
@@ -21,6 +27,7 @@ app.use(function(req, res, next){
     res.render('404');
 });
 
+
 // custom 500 page
 app.use(function(err, req, res, next){
     console.error(err.stack);
@@ -28,6 +35,8 @@ app.use(function(err, req, res, next){
     res.render('500');
 });
 
+
+// Start server.
 app.listen(app.get('port'), () => {
     console.log(`App running on http://localhost:${process.env.PORT}`);
 });
