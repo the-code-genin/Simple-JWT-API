@@ -7,6 +7,7 @@ const path = require('path');
 dotenv.config();
 const app = express();
 app.set('app_url', process.env.APP_URL);
+app.set('app_key', process.env.APP_KEY);
 app.set('port', process.env.PORT || 8080);
 app.engine('handlebars', handlebars.create({ defaultLayout:'main' }).engine);
 app.set('view engine', 'handlebars');
@@ -15,6 +16,7 @@ app.set('view engine', 'handlebars');
 // Middlewares
 app.use(express.static(path.resolve(__dirname, 'public')));
 app.use(require('body-parser')());
+app.use(require('cookie-parser')(app.get('app_key')));
 
 
 // Routes.
