@@ -14,18 +14,21 @@ app.engine('handlebars', handlebars.create({ defaultLayout:'main' }).engine);
 app.set('view engine', 'handlebars');
 
 
+
 // Middlewares
 app.use(express.static(path.resolve(__dirname, 'public')));
 app.use('/api/*', require('body-parser').json());
 app.use('/api/*', require('cors')());
 
 
+
 // Register routes.
 require('./routes')(app);
 
 
-// custom 404 page
-app.use(function(req, res, next){
+
+// Api 404 page
+app.use('/api/*', function(req, res, next){
     res.status(404);
     res.json({
         success: false,
@@ -38,8 +41,8 @@ app.use(function(req, res, next){
 });
 
 
-// custom 500 page
-app.use(function(err, req, res, next){
+// Api 500 page
+app.use('/api/*', function(err, req, res, next){
     console.error(err.stack);
     res.status(500);
     res.json({
@@ -51,6 +54,22 @@ app.use(function(err, req, res, next){
         }
     });
 });
+
+
+// General 404 page
+app.use(function(req, res, next){
+    res.status(404);
+    res.render('404');
+});
+
+
+// General 500 page
+app.use(function(err, req, res, next){
+    console.error(err.stack);
+    res.status(500);
+    res.render('500');
+});
+
 
 
 // Start server.
