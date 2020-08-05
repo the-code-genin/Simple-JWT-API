@@ -7,9 +7,14 @@ const app = express();
 app.set('port', process.env.PORT || 8080);
 
 
+app.get('/', function(req, res){
+    res.type('text/plain');
+    res.send('Hello world!');
+});
+
 
 // custom 404 page
-app.use(function(req, res){
+app.use(function(req, res, next){
     res.type('text/plain');
     res.status(404);
     res.send('404 - Not Found');
