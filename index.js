@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const handlebars = require('express3-handlebars');
 const path = require('path');
 
+
 // Configure app.
 dotenv.config();
 const app = express();
@@ -16,7 +17,7 @@ app.set('view engine', 'handlebars');
 // Middlewares
 app.use(express.static(path.resolve(__dirname, 'public')));
 app.use(require('body-parser').json());
-app.use(require('cors')());
+app.use('/api/*', require('cors')());
 
 
 // Routes.
