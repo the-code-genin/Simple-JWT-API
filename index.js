@@ -20,15 +20,8 @@ app.use(require('body-parser').json());
 app.use('/api/*', require('cors')());
 
 
-// Routes.
-app.get('/api/v1/auth/login', function(req, res){
-    res.json({
-        success: true,
-        payload: {
-
-        }
-    });
-});
+// Register routes.
+require('./routes')(app);
 
 
 // custom 404 page
