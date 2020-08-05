@@ -6,6 +6,7 @@ const path = require('path');
 // Configure app.
 dotenv.config();
 const app = express();
+app.set('app_url', process.env.APP_URL);
 app.set('port', process.env.PORT || 8080);
 app.engine('handlebars', handlebars.create({ defaultLayout:'main' }).engine);
 app.set('view engine', 'handlebars');
@@ -38,5 +39,5 @@ app.use(function(err, req, res, next){
 
 // Start server.
 app.listen(app.get('port'), () => {
-    console.log(`App running on http://localhost:${process.env.PORT}`);
+    console.log(`App running on ${app.get('app_url')}`);
 });
