@@ -16,7 +16,6 @@ app.set('view engine', 'handlebars');
 // Middlewares
 app.use(express.static(path.resolve(__dirname, 'public')));
 app.use(require('body-parser')());
-app.use(require('cookie-parser')(app.get('app_key')));
 
 
 // Routes.
