@@ -9,6 +9,12 @@ const UserSchema = new Schema({
     updated_at: { type: Date, default: Date.now },
 });
 
+UserSchema.methods.toJSON = function() {
+    let obj = this.toObject();
+    delete obj.password;
+    return obj;
+}
+
 
 const UserModel = new Model('User', UserSchema);
 
