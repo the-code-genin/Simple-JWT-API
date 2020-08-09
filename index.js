@@ -2,10 +2,12 @@ const express = require('express');
 const dotenv = require('dotenv');
 const handlebars = require('express3-handlebars');
 const path = require('path');
+const mongoose = require('mongoose');
 
 
 // Configure app.
 dotenv.config();
+mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true});
 const app = express();
 app.set('app_url', process.env.APP_URL);
 app.set('app_key', process.env.APP_KEY);
