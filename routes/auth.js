@@ -91,7 +91,7 @@ module.exports = function(app) {
                             data,
                             access_token: jwt.generateAccessToken(data),
                             token_type: 'bearer',
-                            expires_in: 3600
+                            expires_in: process.env.JWT_TTI
                         }
                     });
                 }
@@ -123,7 +123,7 @@ module.exports = function(app) {
                     data,
                     access_token: jwt.generateAccessToken(data),
                     token_type: 'bearer',
-                    expires_in: 3600
+                    expires_in: process.env.JWT_TTI
                 }
             });
         }).catch(e => {
@@ -154,5 +154,62 @@ module.exports = function(app) {
                 });
             });
         });
+    });
+
+    app.post('/api/v1/auth/refresh', function(req, res){
+        let header = req.get('Authorization');
+
+        if (!/^Bearer (.+)$/i.test(header)) {
+            res.json({
+                success: false,
+                error: {
+                    code: 401,
+                    type: 'AuthenticationError',
+                    message: 'User is not Authenticated'
+                }
+            });
+        } else {
+            let token = /^Bearer (.+)$/i.exec(header)[1].trim();
+            let id = jwt.verifyExpiredAccessToken(token);
+
+            if (!id) {
+                res.json({
+                    success: false,
+                    error: {
+                        code: 401,
+                        type: 'AuthenticationError',
+                        message: 'User is not Authenticated'
+                    }
+                });
+            } else {
+                UserModel.findOne({_id: id}).select('auth_tokens').exec().then(user => {
+                    if (user == null) {
+                        throw new Error('User is not Authenticated');
+                    } else {
+                        user.auth_tokens.push(token);
+
+                        user.save().then(user => {
+                            res.json({
+                                success: true,
+                                payload: {
+                                    access_token: jwt.generateAccessToken(user),
+                                    token_type: 'bearer',
+                                    expires_in: process.env.JWT_TTI
+                                }
+                            });
+                        });
+                    }
+                }).catch(e => {
+                    res.json({
+                        success: false,
+                        error: {
+                            code: 401,
+                            type: 'AuthenticationError',
+                            message: e.message
+                        }
+                    });
+                });
+            }
+        }
     });
 };
