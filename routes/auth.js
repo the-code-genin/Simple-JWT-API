@@ -3,6 +3,7 @@ const Validator = require('validatorjs');
 const bcrypt = require('bcrypt');
 const jwt = require('../lib/jwt');
 const AuthMiddleware = require('../middleware/auth');
+const AuthenticationError = require('../lib/errors').AuthenticationError;
 
 
 const LoginValidator = function(req, res, next) {
@@ -29,10 +30,13 @@ const LoginValidator = function(req, res, next) {
                 message: validation.errors.first(Object.keys(validation.errors.all())[0])
             }
         });
-    } else next();
+        return;
+    }
+    
+    next();
 };
 
-const SignupValidator = function(req, res, next) {
+const SignupValidator = async function(req, res, next) {
     let rules = {
         email: 'required|email',
         password: 'required|min:6'
@@ -56,47 +60,58 @@ const SignupValidator = function(req, res, next) {
                 message: validation.errors.first(Object.keys(validation.errors.all())[0])
             }
         });
-    } else {
-        UserModel.countDocuments({email: req.body.email}).then(count => {
-            if (count != 0) {
-                res.json({
-                    success: false,
-                    error: {
-                        code: 401,
-                        type: 'InvalidFormData',
-                        message: 'This email is not available.'
-                    }
-                });
-            } else next();
+        return;
+    }
+
+    try {
+        let count = await UserModel.countDocuments({email: req.body.email});
+        if (count != 0) {
+            res.json({
+                success: false,
+                error: {
+                    code: 401,
+                    type: 'InvalidFormData',
+                    message: 'This email is not available.'
+                }
+            });
+            return;
+        }
+        
+        next();
+    } catch(e) {
+        res.json({
+            success: false,
+            error: {
+                code: 500,
+                type: 'ServerError',
+                message: e.message
+            }
         });
     }
 };
 
 
 module.exports = function(app) {
-    app.post('/api/v1/auth/login', LoginValidator, function(req, res){
-        UserModel.findOne({email: req.body.email}).select('-auth_tokens').exec().then(user => {
-            if (user == null) {
-                throw new Error("Email and password combination do not match a user in our system.");
-            } else {
-                if (!bcrypt.compareSync(req.body.password, user.password)) {
-                    throw new Error("Email and password combination do not match a user in our system.");
-                } else {
-                    let data = user.toJSON();
-                    delete data.password;
+    // Login route
+    app.post('/api/v1/auth/login', LoginValidator, async function(req, res){
+        try {
+            let user = await UserModel.findOne({email: req.body.email}).select('-auth_tokens').exec();
+            if (user == null) throw new Error("Email and password combination do not match a user in our system.");
+            if (!bcrypt.compareSync(req.body.password, user.password)) throw new Error("Email and password combination do not match a user in our system.");
+            
+            let data = user.toJSON();
+            delete data.password;
 
-                    res.json({
-                        success: true,
-                        payload: {
-                            data,
-                            access_token: jwt.generateAccessToken(data),
-                            token_type: 'bearer',
-                            expires_in: process.env.JWT_TTI
-                        }
-                    });
+            res.json({
+                success: true,
+                payload: {
+                    data,
+                    access_token: jwt.generateAccessToken(data),
+                    token_type: 'bearer',
+                    expires_in: process.env.JWT_TTI
                 }
-            }
-        }).catch(e => {
+            });
+        } catch(e) {
             res.json({
                 success: false,
                 error: {
@@ -105,14 +120,17 @@ module.exports = function(app) {
                     message: e.message
                 }
             });
-        });
+        }
     });
 
-    app.post('/api/v1/auth/signup', SignupValidator, function(req, res){
-        UserModel.create({
-            email: req.body.email, 
-            password: bcrypt.hashSync(req.body.password, 10)
-        }).then(user => {
+    // Signup route
+    app.post('/api/v1/auth/signup', SignupValidator, async function(req, res){
+        try {
+            let user = await UserModel.create({
+                email: req.body.email, 
+                password: bcrypt.hashSync(req.body.password, 10)
+            });
+
             let data = user.toJSON();
             delete data.password;
             delete data.auth_tokens;
@@ -126,12 +144,20 @@ module.exports = function(app) {
                     expires_in: process.env.JWT_TTI
                 }
             });
-        }).catch(e => {
-            throw new Error(e.message);
-        });
+        } catch(e) {
+            res.json({
+                success: false,
+                error: {
+                    code: 500,
+                    type: 'ServerError',
+                    message: e.message
+                }
+            });
+        }
     });
 
-    app.get('/api/v1/auth', AuthMiddleware, function(req, res){
+    // Index route
+    app.get('/api/v1/auth', AuthMiddleware, async function(req, res){
         res.json({
             success: true,
             payload: {
@@ -140,76 +166,78 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/api/v1/auth/logout', AuthMiddleware, function(req, res){
-        UserModel.findOne({_id: req.user._id}).select('auth_tokens').exec().then(user => {
+    // Logout route
+    app.post('/api/v1/auth/logout', AuthMiddleware, async function(req, res){
+        try {
             let token = /^Bearer (.+)$/i.exec(req.get('Authorization'))[1].trim();
-            user.auth_tokens.push(token);
 
-            user.save().then(user => {
-                res.json({
-                    success: true,
-                    payload: {
-                        data: {}
-                    }
-                });
+            // Add token to list of invalidated tokens.
+            let user = await UserModel.findOne({_id: req.user._id}).select('auth_tokens').exec();
+            user.auth_tokens.push(token);
+            await user.save();
+
+            res.json({
+                success: true,
+                payload: {
+                    data: {}
+                }
             });
-        });
+        } catch(e) {
+            res.json({
+                success: false,
+                error: {
+                    code: 500,
+                    type: 'ServerError',
+                    message: e.message
+                }
+            });
+        }
     });
 
-    app.post('/api/v1/auth/refresh', function(req, res){
+    // Refresh route
+    app.post('/api/v1/auth/refresh', async function(req, res){
         let header = req.get('Authorization');
 
-        if (!/^Bearer (.+)$/i.test(header)) {
+        if (!/^Bearer (.+)$/i.test(header)) { // If bearer token is not present.
+            res.json(AuthenticationError);
+            return;
+        }
+
+        // Extract user id from bearer token
+        let token = /^Bearer (.+)$/i.exec(header)[1].trim();
+        let id = jwt.verifyExpiredAccessToken(token);
+
+        if (!id) { // Invalid bearer token.
+            res.json(AuthenticationError);
+            return;
+        }
+
+        try {
+            let user = await UserModel.findOne({_id: id}).select('auth_tokens').exec();
+            if (user == null) throw new Error('User is not Authenticated');
+
+            // Invalidate the previous auth token.
+            user.auth_tokens.push(token);
+            await user.save();
+            
+            // Generate and return new auth token.
+            res.json({
+                success: true,
+                payload: {
+                    access_token: jwt.generateAccessToken(user),
+                    token_type: 'bearer',
+                    expires_in: process.env.JWT_TTI
+                }
+            });
+        } catch(e) {
             res.json({
                 success: false,
                 error: {
                     code: 401,
                     type: 'AuthenticationError',
-                    message: 'User is not Authenticated'
+                    message: e.message
                 }
             });
-        } else {
-            let token = /^Bearer (.+)$/i.exec(header)[1].trim();
-            let id = jwt.verifyExpiredAccessToken(token);
-
-            if (!id) {
-                res.json({
-                    success: false,
-                    error: {
-                        code: 401,
-                        type: 'AuthenticationError',
-                        message: 'User is not Authenticated'
-                    }
-                });
-            } else {
-                UserModel.findOne({_id: id}).select('auth_tokens').exec().then(user => {
-                    if (user == null) {
-                        throw new Error('User is not Authenticated');
-                    } else {
-                        user.auth_tokens.push(token);
-
-                        user.save().then(user => {
-                            res.json({
-                                success: true,
-                                payload: {
-                                    access_token: jwt.generateAccessToken(user),
-                                    token_type: 'bearer',
-                                    expires_in: process.env.JWT_TTI
-                                }
-                            });
-                        });
-                    }
-                }).catch(e => {
-                    res.json({
-                        success: false,
-                        error: {
-                            code: 401,
-                            type: 'AuthenticationError',
-                            message: e.message
-                        }
-                    });
-                });
-            }
         }
     });
 };

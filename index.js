@@ -1,13 +1,17 @@
-const express = require('express');
 const dotenv = require('dotenv');
+const mongoose = require('mongoose');
+const express = require('express');
 const handlebars = require('express3-handlebars');
 const path = require('path');
-const mongoose = require('mongoose');
 
 
-// Configure app.
+// Load env variables.
 dotenv.config();
+
+// Connect to db.
 mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true});
+
+// Configure server.
 const app = express();
 app.set('app_url', process.env.APP_URL);
 app.set('app_key', process.env.APP_KEY);
@@ -17,7 +21,7 @@ app.set('view engine', 'handlebars');
 
 
 
-// Middlewares
+// Add middleware
 app.use(express.static(path.resolve(__dirname, 'public')));
 app.use('/api/*', require('body-parser').json());
 app.use('/api/*', require('cors')());
@@ -26,7 +30,6 @@ app.use('/api/*', require('cors')());
 
 // Register routes.
 require('./routes')(app);
-
 
 
 // Api 404 page
