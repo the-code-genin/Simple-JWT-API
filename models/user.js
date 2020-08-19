@@ -11,10 +11,7 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    auth_tokens: {
-        type: [String],
-        select: false
-    },
+    auth_tokens: [String],
     created_at: {
         type: Date,
         required: true,
@@ -26,13 +23,6 @@ const UserSchema = new Schema({
         default: Date.now
     },
 });
-
-UserSchema.methods.toJSON = function() {
-    let obj = this.toObject();
-    delete obj.password;
-    return obj;
-}
-
 
 const UserModel = new Model('User', UserSchema);
 
