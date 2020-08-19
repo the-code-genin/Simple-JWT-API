@@ -57,8 +57,8 @@ const SignupValidator = function(req, res, next) {
             }
         });
     } else {
-        UserModel.findOne({email: req.body.email}).exec().then(user => {
-            if (user != null) {
+        UserModel.countDocuments({email: req.body.email}).then(count => {
+            if (count != 0) {
                 res.json({
                     success: false,
                     error: {
@@ -75,18 +75,21 @@ const SignupValidator = function(req, res, next) {
 
 module.exports = function(app) {
     app.post('/api/v1/auth/login', LoginValidator, function(req, res){
-        UserModel.findOne({email: req.body.email}).exec().then(user => {
+        UserModel.findOne({email: req.body.email}).select('-auth_tokens').exec().then(user => {
             if (user == null) {
                 throw new Error("Email and password combination do not match a user in our system.");
             } else {
                 if (!bcrypt.compareSync(req.body.password, user.password)) {
                     throw new Error("Email and password combination do not match a user in our system.");
                 } else {
+                    let data = user.toJSON();
+                    delete data.password;
+
                     res.json({
                         success: true,
                         payload: {
-                            data: user.toJSON(),
-                            access_token: jwt.generateAccessToken(user),
+                            data,
+                            access_token: jwt.generateAccessToken(data),
                             token_type: 'bearer',
                             expires_in: 3600
                         }
@@ -110,11 +113,15 @@ module.exports = function(app) {
             email: req.body.email, 
             password: bcrypt.hashSync(req.body.password, 10)
         }).then(user => {
+            let data = user.toJSON();
+            delete data.password;
+            delete data.auth_tokens;
+
             res.json({
                 success: true,
                 payload: {
-                    data: user.toJSON(),
-                    access_token: jwt.generateAccessToken(user),
+                    data,
+                    access_token: jwt.generateAccessToken(data),
                     token_type: 'bearer',
                     expires_in: 3600
                 }
@@ -130,6 +137,22 @@ module.exports = function(app) {
             payload: {
                 data: req.user
             }
+        });
+    });
+
+    app.post('/api/v1/auth/logout', AuthMiddleware, function(req, res){
+        UserModel.findOne({_id: req.user._id}).select('auth_tokens').exec().then(user => {
+            let token = /^Bearer (.+)$/i.exec(req.get('Authorization'))[1].trim();
+            user.auth_tokens.push(token);
+
+            user.save().then(user => {
+                res.json({
+                    success: true,
+                    payload: {
+                        data: {}
+                    }
+                });
+            });
         });
     });
 };
