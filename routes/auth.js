@@ -2,6 +2,8 @@ const UserModel = require('../models/user');
 const Validator = require('validatorjs');
 const bcrypt = require('bcrypt');
 const jwt = require('../lib/jwt');
+const AuthMiddleware = require('../middleware/auth');
+
 
 const LoginValidator = function(req, res, next) {
     let rules = {
@@ -70,6 +72,7 @@ const SignupValidator = function(req, res, next) {
     }
 };
 
+
 module.exports = function(app) {
     app.post('/api/v1/auth/login', LoginValidator, function(req, res){
         UserModel.findOne({email: req.body.email}).exec().then(user => {
@@ -118,6 +121,15 @@ module.exports = function(app) {
             });
         }).catch(e => {
             throw new Error(e.message);
+        });
+    });
+
+    app.get('/api/v1/auth', AuthMiddleware, function(req, res){
+        res.json({
+            success: true,
+            payload: {
+                data: req.user
+            }
         });
     });
 };
