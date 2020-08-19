@@ -6,7 +6,7 @@ const AuthMiddleware = require('../middleware/auth');
 const AuthenticationError = require('../lib/errors').AuthenticationError;
 
 
-const LoginValidator = function(req, res, next) {
+const LoginValidator = (req, res, next) => {
     let rules = {
         email: 'required|email',
         password: 'required|min:6'
@@ -36,7 +36,7 @@ const LoginValidator = function(req, res, next) {
     next();
 };
 
-const SignupValidator = async function(req, res, next) {
+const SignupValidator = async (req, res, next) => {
     let rules = {
         email: 'required|email',
         password: 'required|min:6'
@@ -91,9 +91,9 @@ const SignupValidator = async function(req, res, next) {
 };
 
 
-module.exports = function(app) {
+module.exports = (app) => {
     // Login route
-    app.post('/api/v1/auth/login', LoginValidator, async function(req, res){
+    app.post('/api/v1/auth/login', LoginValidator, async (req, res) => {
         try {
             let user = await UserModel.findOne({email: req.body.email}).select('-auth_tokens').exec();
             if (user == null) throw new Error("Email and password combination do not match a user in our system.");
@@ -124,7 +124,7 @@ module.exports = function(app) {
     });
 
     // Signup route
-    app.post('/api/v1/auth/signup', SignupValidator, async function(req, res){
+    app.post('/api/v1/auth/signup', SignupValidator, async (req, res) => {
         try {
             let user = await UserModel.create({
                 email: req.body.email, 
@@ -157,7 +157,7 @@ module.exports = function(app) {
     });
 
     // Index route
-    app.get('/api/v1/auth', AuthMiddleware, async function(req, res){
+    app.get('/api/v1/auth', AuthMiddleware, async (req, res) => {
         res.json({
             success: true,
             payload: {
@@ -167,7 +167,7 @@ module.exports = function(app) {
     });
 
     // Logout route
-    app.post('/api/v1/auth/logout', AuthMiddleware, async function(req, res){
+    app.post('/api/v1/auth/logout', AuthMiddleware, async (req, res) => {
         try {
             let token = /^Bearer (.+)$/i.exec(req.get('Authorization'))[1].trim();
 
@@ -195,7 +195,7 @@ module.exports = function(app) {
     });
 
     // Refresh route
-    app.post('/api/v1/auth/refresh', async function(req, res){
+    app.post('/api/v1/auth/refresh', async (req, res) => {
         let header = req.get('Authorization');
 
         if (!/^Bearer (.+)$/i.test(header)) { // If bearer token is not present.

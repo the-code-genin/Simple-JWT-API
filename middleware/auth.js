@@ -2,7 +2,7 @@ const jwt = require('../lib/jwt');
 const UserModel = require('../models/user');
 const AuthenticationError = require('../lib/errors').AuthenticationError;
 
-module.exports = async function(req, res, next) {
+module.exports = async (req, res, next) => {
     let header = req.get('Authorization');
 
     if (!/^Bearer (.+)$/i.test(header)) { // Bearer token is not present
