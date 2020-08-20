@@ -1,13 +1,13 @@
 {
-  "name": "book-keeper-api",
+  "name": "simple-jwt-api",
   "version": "1.0.0",
-  "description": "A simple book keeper api with a node backend.",
+  "description": "A simple API that uses JWT for token authentication.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "Iyiola-am",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
