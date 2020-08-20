@@ -20,5 +20,8 @@
     "mongodb": "^3.6.0",
     "mongoose": "^5.9.27",
     "validatorjs": "^3.18.1"
+  },
+  "devDependencies": {
+    "mocha": "^8.1.1"
   }
 }
