@@ -1,6 +1,6 @@
 # Simple JWT API
 
-This is a simple API that uses [JWT](https://jwt.io/) for bearer token authentication. It is written in NodeJS and uses MongoDB for data storage.
+This is a simple API that uses [JWT](https://jwt.io/) for bearer token authentication. It is written in [NodeJS](https://nodejs.org/) and uses [MongoDB](https://www.mongodb.com/) for data storage.
 
 The project can be forked and used as a bootstrap for API development as all required authentication endpoints and logic have already been implemented.
 
@@ -21,3 +21,7 @@ Developed and maintained by [Mohammed Adekunle](https://github.com/Iyiola-am).
 - Copy the `.env.example` file to `.env`.
 - Update your `.env` file according to your web server's environment.
 - Run `node index.js`.
+
+# Endpoints
+
+A documentation of the endpoints provided by the API can be found [here](https://documenter.getpostman.com/view/9577513/T1LTejEP?version=latest).
