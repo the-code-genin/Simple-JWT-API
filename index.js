@@ -1,5 +1,4 @@
 const dotenv = require('dotenv');
-const mongoose = require('mongoose');
 const express = require('express');
 const handlebars = require('express3-handlebars');
 const path = require('path');
@@ -8,8 +7,8 @@ const path = require('path');
 // Load env variables.
 dotenv.config();
 
-// Connect to db.
-mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true});
+// Get the db
+const db = require('./db');
 
 // Configure server.
 const app = express();
