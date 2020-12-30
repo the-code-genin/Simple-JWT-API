@@ -19,12 +19,10 @@
     "express3-handlebars": "^0.5.2",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.21.15",
-    "mongodb": "^3.6.0",
-    "mongoose": "^5.9.27",
     "mysql": "^2.18.1",
-    "validatorjs": "^3.18.1"
+    "validatorjs": "^3.22.1"
   },
   "devDependencies": {
-    "mocha": "^8.1.1"
+    "mocha": "^8.2.1"
   }
 }
