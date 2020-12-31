@@ -35,7 +35,3 @@ Developed and maintained by [Mohammed Adekunle](https://github.com/Iyiola-am).
 - Run `node node_modules/knex/bin/cli.js migrate:up` to run all db migrations.
 - Run `node index.js` to fire up the web server.
 - Build something awesome!
-
-# Endpoints
-
-A documentation of the endpoints provided by the API can be found [here](https://documenter.getpostman.com/view/9577513/T1LTejEP?version=latest).
