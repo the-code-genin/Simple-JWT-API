@@ -1,4 +1,5 @@
 const UserModel = require('../models/user');
+const UserAuthTokenModel = require('../models/user_auth_token');
 const Validator = require('validatorjs');
 const bcrypt = require('bcrypt');
 const jwt = require('../lib/jwt');
@@ -206,13 +207,12 @@ module.exports = (app) => {
         }
 
         try {
-            let user = await UserModel.findOne({_id: id}).select('auth_tokens').exec();
+            let user = await UserModel.where('id', id).fetch();
             if (user == null) throw new Error('User is not Authenticated');
 
             // Invalidate the previous auth token.
-            user.auth_tokens.push(token);
-            await user.save();
-            
+            await (new UserAuthTokenModel({token, user_id: user.id})).save();
+
             // Generate and return new auth token.
             res.json({
                 success: true,
