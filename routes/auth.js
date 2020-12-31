@@ -166,9 +166,7 @@ module.exports = (app) => {
             let token = /^Bearer (.+)$/i.exec(req.get('Authorization'))[1].trim();
 
             // Add token to list of invalidated tokens.
-            let user = await UserModel.findOne({_id: req.user._id}).select('auth_tokens').exec();
-            user.auth_tokens.push(token);
-            await user.save();
+            await (new UserAuthTokenModel({token, user_id: req.user.id})).save();
 
             res.json({
                 success: true,
