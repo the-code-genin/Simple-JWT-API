@@ -1,6 +1,6 @@
 # Simple JWT API
 
-This is a simple API that uses [JWT](https://jwt.io/) for bearer token authentication. It is written in [NodeJS](https://nodejs.org/) and uses [MongoDB](https://www.mongodb.com/) for data storage.
+This is a simple API that uses [JWT](https://jwt.io/) for bearer token authentication. It is written in [NodeJS](https://nodejs.org/) and uses [MySQL](https://www.mysql.com/) for data storage.
 
 The project can be forked and used as a bootstrap for API development as all required authentication endpoints and logic have already been implemented.
 
@@ -12,7 +12,13 @@ Developed and maintained by [Mohammed Adekunle](https://github.com/Iyiola-am).
 
 - The NodeJS runtime.
 - NPM, Yarn or any similar NodeJS package manager.
-- MongoDB.
+- A MySQL database.
+
+## Features
+
+- Bookshelf/knex for ORM/query builder.
+- Features a database migration system.
+- A well defined directory structure.
 
 # How To Install
 
@@ -20,7 +26,8 @@ Developed and maintained by [Mohammed Adekunle](https://github.com/Iyiola-am).
 - Run `npm install` or `yarn install` to install the app dependencies.
 - Copy the `.env.example` file to `.env`.
 - Update your `.env` file according to your web server's environment.
-- Run `node index.js`.
+- Run `node node_modules/knex/bin/cli.js migrate:up` to run all db migrations.
+- Run `node index.js` to fire up the webserver.
 
 # Endpoints
 
