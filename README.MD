@@ -20,8 +20,9 @@ Developed and maintained by [Mohammed Adekunle](https://github.com/Iyiola-am).
 
 ## Features
 
+- Express as the base requests router.
 - Bookshelf/knex for ORM/query builder.
-- Features a database migration system.
+- A database migration system.
 - A well defined directory structure.
 - JWT authentication endpoints out of the box for SPAs and mobile apps.
 
