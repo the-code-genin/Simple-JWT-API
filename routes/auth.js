@@ -32,7 +32,7 @@ const LoginValidator = (req, res, next) => {
         });
         return;
     }
-    
+
     next();
 };
 
@@ -64,7 +64,7 @@ const SignupValidator = async (req, res, next) => {
     }
 
     try {
-        let count = await UserModel.countDocuments({email: req.body.email});
+        let count = await UserModel.where('email', req.body.email).count();
         if (count != 0) {
             res.json({
                 success: false,
@@ -95,18 +95,15 @@ module.exports = (app) => {
     // Login route
     app.post('/api/v1/auth/login', LoginValidator, async (req, res) => {
         try {
-            let user = await UserModel.findOne({email: req.body.email}).select('-auth_tokens').exec();
+            let user = await UserModel.where('email', req.body.email).fetch();
             if (user == null) throw new Error("Email and password combination do not match a user in our system.");
-            if (!bcrypt.compareSync(req.body.password, user.password)) throw new Error("Email and password combination do not match a user in our system.");
-            
-            let data = user.toJSON();
-            delete data.password;
+            if (!bcrypt.compareSync(req.body.password, user.toJSON({visibility: false}).password)) throw new Error("Email and password combination do not match a user in our system.");
 
             res.json({
                 success: true,
                 payload: {
-                    data,
-                    access_token: jwt.generateAccessToken(data),
+                    data: user.toJSON(),
+                    access_token: jwt.generateAccessToken(user),
                     token_type: 'bearer',
                     expires_in: process.env.JWT_TTI
                 }
@@ -126,20 +123,16 @@ module.exports = (app) => {
     // Signup route
     app.post('/api/v1/auth/signup', SignupValidator, async (req, res) => {
         try {
-            let user = await UserModel.create({
-                email: req.body.email, 
+            let user = await (new UserModel({
+                email: req.body.email,
                 password: bcrypt.hashSync(req.body.password, 10)
-            });
-
-            let data = user.toJSON();
-            delete data.password;
-            delete data.auth_tokens;
+            })).save();
 
             res.json({
                 success: true,
                 payload: {
-                    data,
-                    access_token: jwt.generateAccessToken(data),
+                    data: user.toJSON(),
+                    access_token: jwt.generateAccessToken(user),
                     token_type: 'bearer',
                     expires_in: process.env.JWT_TTI
                 }
