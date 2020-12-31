@@ -20,12 +20,10 @@ module.exports = async (req, res, next) => {
     }
 
     try {
-        let user = await UserModel
-            .findOne({_id: id, auth_tokens: {$ne: token}})
-            .select('-password -auth_tokens')
-            .exec();
+        let user = await UserModel.where('id', id).fetch();
 
         if (user == null) throw new Error('User is not Authenticated');
+        else if (await user.related('authTokens').where('token', token).count() != 0) throw new Error('User is not Authenticated');
 
         req.user = user;
         next();
