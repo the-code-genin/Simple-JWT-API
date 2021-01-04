@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@types/bookshelf": "^1.2.1",
+    "@types/cors": "^2.8.9",
     "@types/express": "^4.17.9",
     "@types/node": "^14.14.19",
     "mocha": "^8.2.1",
