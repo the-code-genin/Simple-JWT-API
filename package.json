@@ -2,9 +2,11 @@
   "name": "simple-jwt-api",
   "version": "1.0.0",
   "description": "A simple API that uses JWT for token authentication.",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "serve": "nodemon index.ts",
+    "build": "tsc --project ./"
   },
   "author": "Iyiola-am",
   "license": "MIT",
