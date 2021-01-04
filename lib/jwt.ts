@@ -1,15 +1,14 @@
 import jwt from 'jsonwebtoken'
+import { User } from '../models/user';
 
 module.exports = {
     /**
      * Extract user id from a valid access token.
-     * @param {String} token
-     * @returns {String}
      */
     verifyAccessToken(token: string): string|null {
         try {
-            let payload = jwt.verify(token, String(process.env.JWT_SECRET)) as any;
-            return payload.sub as string;
+            let payload = jwt.verify(token, String(process.env.JWT_SECRET)) as {[key: string]: string};
+            return payload.sub;
         } catch(e) {
             return null;
         }
@@ -17,27 +16,23 @@ module.exports = {
 
     /**
      * Extract user id from a valid or expired access token.
-     * @param {String} token
-     * @returns {String}
      */
     verifyExpiredAccessToken(token: string): string|null {
         try {
-            let payload = jwt.verify(token, String(process.env.JWT_SECRET)) as any;
-            return payload.sub as string;
+            let payload = jwt.verify(token, String(process.env.JWT_SECRET)) as {[key: string]: string};
+            return payload.sub;
         } catch(e) {
             if (e instanceof jwt.TokenExpiredError) {
-                let payload = jwt.decode(token) as any;
-                return payload.sub as string;
+                let payload = jwt.decode(token) as {[key: string]: string};
+                return payload.sub;
             } else return null;
         }
     },
 
     /**
-     * 
-     * @param {object} user
-     * @returns {String}
+     * Generate access token from a user instance
      */
-    generateAccessToken(user: any): string {
+    generateAccessToken(user: User): string {
         return jwt.sign({
             iss: process.env.APP_URL,
             exp: (new Date).getTime() + Number(process.env.JWT_TTI),
