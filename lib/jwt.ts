@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken'
 
 module.exports = {
     /**
@@ -6,10 +6,10 @@ module.exports = {
      * @param {String} token
      * @returns {String}
      */
-    verifyAccessToken(token) {
+    verifyAccessToken(token: string): string|null {
         try {
-            let payload = jwt.verify(token, process.env.JWT_SECRET);
-            return payload.sub;
+            let payload = jwt.verify(token, String(process.env.JWT_SECRET)) as any;
+            return payload.sub as string;
         } catch(e) {
             return null;
         }
@@ -20,14 +20,14 @@ module.exports = {
      * @param {String} token
      * @returns {String}
      */
-    verifyExpiredAccessToken(token) {
+    verifyExpiredAccessToken(token: string): string|null {
         try {
-            let payload = jwt.verify(token, process.env.JWT_SECRET);
-            return payload.sub;
+            let payload = jwt.verify(token, String(process.env.JWT_SECRET)) as any;
+            return payload.sub as string;
         } catch(e) {
             if (e instanceof jwt.TokenExpiredError) {
-                let payload = jwt.decode(token);
-                return payload.sub;
+                let payload = jwt.decode(token) as any;
+                return payload.sub as string;
             } else return null;
         }
     },
@@ -37,11 +37,11 @@ module.exports = {
      * @param {object} user
      * @returns {String}
      */
-    generateAccessToken(user) {
+    generateAccessToken(user: any): string {
         return jwt.sign({
             iss: process.env.APP_URL,
             exp: (new Date).getTime() + Number(process.env.JWT_TTI),
             sub: user.id
-        }, process.env.JWT_SECRET);
+        }, String(process.env.JWT_SECRET));
     }
 }
