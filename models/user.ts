@@ -19,7 +19,7 @@ export default class User extends BaseEntity {
     // @ts-ignore
     email: string;
 
-    @Column('text')
+    @Column('text', {select: false})
     // @ts-ignore
     password: string;
 
