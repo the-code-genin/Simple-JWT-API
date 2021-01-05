@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import User from '../models/user';
 
-module.exports = {
+export default {
     /**
      * Extract user id from a valid access token.
      */
