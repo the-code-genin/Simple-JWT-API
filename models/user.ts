@@ -1,9 +1,9 @@
 import BaseModel from './base-model'
 import { Column, Entity, OneToMany } from 'typeorm';
-import { UserAuthToken } from './user_auth_token';
+import UserAuthToken from './user_auth_token';
 
 @Entity()
-export class User extends BaseModel {
+export default class User extends BaseModel {
     @Column('text')
     // @ts-ignore
     email: string;
