@@ -2,7 +2,7 @@ import BaseModel from './base-model'
 import { Column, Entity, OneToMany } from 'typeorm';
 import UserAuthToken from './user_auth_token';
 
-@Entity()
+@Entity('users')
 export default class User extends BaseModel {
     @Column('text')
     // @ts-ignore
