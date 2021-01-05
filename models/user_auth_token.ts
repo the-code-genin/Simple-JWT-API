@@ -22,5 +22,5 @@ export default class UserAuthToken extends BaseEntity {
   @ManyToOne(type => User)
   @JoinColumn({name: 'user_id', referencedColumnName: 'id'})
   // @ts-ignore
-  user: User
+  user: Promise<User>
 }

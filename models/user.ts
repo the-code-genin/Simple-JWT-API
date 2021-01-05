@@ -25,5 +25,5 @@ export default class User extends BaseEntity {
 
     @OneToMany(type => UserAuthToken, (userAuthToken: UserAuthToken) => userAuthToken.user)
     // @ts-ignore
-    userAuthTokens: UserAuthToken[]
+    userAuthTokens: Promise<UserAuthToken[]>
 }
