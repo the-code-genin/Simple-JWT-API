@@ -8,7 +8,7 @@ export default class AuthMiddleware {
     static async handle(req: Request, res: Response, next: NextFunction) {
         let header = req.get('Authorization') as string;
         if (!/^Bearer (.+)$/i.test(header)) { // Bearer token is not present
-            res.json(AuthenticationError());
+            res.json(AuthenticationError('User is not Authenticated'));
             return;
         }
 
@@ -17,7 +17,7 @@ export default class AuthMiddleware {
         let token = (/^Bearer (.+)$/i.exec(header) as string[])[1].trim();
         let id = jwt.verifyAccessToken(token);
         if (!id) { // Invalid Bearer token
-            res.json(AuthenticationError());
+            res.json(AuthenticationError('User is not Authenticated'));
             return;
         }
 
