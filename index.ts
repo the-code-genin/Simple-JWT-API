@@ -26,7 +26,7 @@ import routes from './routes'
     // Add middleware
     app.use(express.static(__dirname + '/public'));
     app.use(corsMiddleware());
-    app.use('/api/*', express.json);
+    app.use('/api/*', express.json());
 
 
     // Register routes.
