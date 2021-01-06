@@ -22,7 +22,7 @@ export default async function AuthMiddleware(req: Request, res: Response, next: 
 
 
     try {
-        let user = await User.findOneOrFail({where: {id}});
+        let user = await User.findOne({where: {id}});
 
         if (user == null) throw new Error('User is not Authenticated');
         else if (await UserAuthToken.count({where: {user_id: user.id, token}}) != 0) throw new Error('User is not Authenticated');
