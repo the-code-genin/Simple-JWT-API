@@ -1,6 +1,6 @@
 # Simple JWT API
 
-This is a simple API boilerplate that uses [JWT](https://jwt.io/) for bearer token authentication. It is written in [NodeJS](https://nodejs.org/)/[Typescript](https://www.typescriptlang.org/) and uses [MySQL](https://www.mysql.com/) for data storage.
+This is a simple API boilerplate that uses [JWT](https://jwt.io/) for bearer token authentication. It is written in [NodeJS](https://nodejs.org/)/[Typescript](https://www.typescriptlang.org/) and uses [MySQL](https://www.mysql.com/) for data storage by default.
 
 The choice of the data storage system can easily be swapped with another SQL/NoSQL database as per project requirements.
 
