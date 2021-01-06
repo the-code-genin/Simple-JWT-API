@@ -2,8 +2,7 @@ import dotenv from 'dotenv'
 import 'reflect-metadata'
 import { createConnection } from 'typeorm'
 import express, { NextFunction, Request, Response } from 'express'
-// @ts-ignore
-import handlebars from 'express3-handlebars'
+import ejs from 'ejs'
 import corsMiddleware from 'cors'
 import {NotFoundError, ServerError} from './lib/errors'
 import routes from './routes'
@@ -22,8 +21,7 @@ import routes from './routes'
     app.set('app_key', process.env.APP_KEY);
     app.set('port', process.env.PORT || 8080);
     app.set('db', db);
-    app.engine('handlebars', handlebars.create({defaultLayout: 'main'}).engine);
-    app.set('view engine', 'handlebars');
+    app.set('view engine', ejs);
 
 
     // Add middleware
