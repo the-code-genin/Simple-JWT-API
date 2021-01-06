@@ -28,6 +28,7 @@
     "@types/ejs": "^3.0.5",
     "@types/express": "^4.17.9",
     "@types/jsonwebtoken": "^8.5.0",
+    "@types/mocha": "^8.2.0",
     "@types/node": "^14.14.19",
     "@types/validatorjs": "^3.15.0",
     "mocha": "^8.2.1",
