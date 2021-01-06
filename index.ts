@@ -21,7 +21,7 @@ import routes from './routes'
     app.set('app_key', process.env.APP_KEY);
     app.set('port', process.env.PORT || 8080);
     app.set('db', db);
-    app.set('view engine', ejs);
+    app.set('view engine', 'ejs');
 
 
     // Add middleware
