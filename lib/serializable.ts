@@ -1,3 +1,3 @@
 export default interface Serializable {
-    toJson(): {[key: string]: any};
+    toJSON(): {[key: string]: any};
 }

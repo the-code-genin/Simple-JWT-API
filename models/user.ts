@@ -28,7 +28,7 @@ export default class User extends BaseEntity implements Serializable {
     // @ts-ignore
     userAuthTokens: Promise<UserAuthToken[]>
 
-    toJson() {
+    toJSON() {
         let data = Object.entries(this).filter(entry => ['password'].indexOf(entry[0]) == -1);
         return Object.fromEntries(data);
     }
