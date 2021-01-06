@@ -9,6 +9,10 @@ export function ApplicationError(code: number, type: string, message: string) {
     }
 }
 
+export function NotFoundError(message: string = 'The resource you were looking for was not found on this server.') {
+    return ApplicationError(404, 'NotFoundError', message);
+}
+
 export function AuthenticationError(message: string = 'User is not Authenticated!') {
     return ApplicationError(401, 'AuthenticationError', message);
 }
