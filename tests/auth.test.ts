@@ -1,5 +1,5 @@
 import assert from 'assert'
 
-describe('Example', () => {
+describe('Test signup', async () => {
     assert('1', '1');
 });
