@@ -21,7 +21,7 @@ Developed and maintained by [Mohammed Adekunle](https://github.com/Iyiola-am).
 ## Features
 
 - [Express](https://expressjs.com/) as the base requests router.
-- [TypeORM](https://typeorm.io/) for ORM/query builder.
+- [TypeORM](https://typeorm.io/) for ORM/query builder and migrations.
 - Written completely in [Typescript](https://www.typescriptlang.org/).
 - [JWT](https://jwt.io/) authentication endpoints out of the box for SPAs and mobile apps.
 - [Mocha](https://mochajs.org/) for testing.
