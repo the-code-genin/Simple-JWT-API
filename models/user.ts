@@ -16,11 +16,11 @@ export default class User extends BaseEntity implements Serializable {
     // @ts-ignore
     updated_at: String;
 
-    @Column('text')
+    @Column('varchar', {length: 255})
     // @ts-ignore
     email: string;
 
-    @Column('text')
+    @Column('varchar', {length: 255})
     // @ts-ignore
     password: string;
 
