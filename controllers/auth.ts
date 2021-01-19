@@ -60,7 +60,7 @@ export default class AuthController {
 
             // Add token to list of invalidated tokens.
             let userAuthToken = new UserAuthToken;
-            userAuthToken.user = Promise.resolve(req.app.get('user') as User);
+            userAuthToken.user = Promise.resolve(req.app.get('authUser') as User);
             userAuthToken.token = token;
             await userAuthToken.save();
 
@@ -82,7 +82,7 @@ export default class AuthController {
         res.json({
             success: true,
             payload: {
-                data: (req.app.get('user') as User).toJSON()
+                data: (req.app.get('authUser') as User).toJSON()
             }
         });
     }
@@ -115,7 +115,7 @@ export default class AuthController {
 
             // Invalidate the previous auth token.
             let userAuthToken = new UserAuthToken;
-            userAuthToken.user = Promise.resolve(req.app.get('user') as User);
+            userAuthToken.user = Promise.resolve(req.app.get('authUser') as User);
             userAuthToken.token = token;
             await userAuthToken.save();
 
