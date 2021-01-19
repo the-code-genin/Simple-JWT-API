@@ -1,5 +1,7 @@
 import assert from 'assert'
 
-describe('Test signup', async () => {
-    assert('1', '1');
+describe('Sample test', function() {
+    it('Passes', function () {
+        assert(1 == 1);
+    });
 });
