@@ -27,7 +27,7 @@ export default async function AuthMiddleware(req: Request, res: Response, next: 
         if (user == null) throw new Error('User is not Authenticated');
         else if (await UserAuthToken.count({where: {user: {id: user.id}, token}}) != 0) throw new Error('User is not Authenticated');
 
-        req.app.set('user', user);
+        req.app.set('authUser', user);
         next();
     } catch(e) {
         res.json(AuthenticationError(e.message));
