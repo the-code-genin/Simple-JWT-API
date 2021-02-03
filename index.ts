@@ -5,6 +5,7 @@ import express, { NextFunction, Request, Response } from 'express'
 import corsMiddleware from 'cors'
 import {NotFoundError, ServerError} from './lib/errors'
 import routes from './routes'
+import './types' // Imported last
 
 
 (async function() {
