@@ -8,5 +8,8 @@
       "strict": true,
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
+      "typeRoots": [
+        "./types"
+      ]
     }
 }
