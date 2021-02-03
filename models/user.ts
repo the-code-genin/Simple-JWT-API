@@ -1,6 +1,5 @@
 import { PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Column, Entity, BaseEntity, OneToMany } from 'typeorm';
 import UserAuthToken from './user_auth_token';
-import Serializable from '../lib/serializable';
 
 @Entity('users')
 export default class User extends BaseEntity implements Serializable {
