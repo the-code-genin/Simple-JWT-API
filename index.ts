@@ -4,6 +4,7 @@ import { createConnection } from 'typeorm'
 import express from 'express'
 import corsMiddleware from 'cors'
 import routes from './routes'
+import path from 'path'
 
 
 (async function() {
@@ -17,18 +18,19 @@ import routes from './routes'
     const app = express();
     app.set('app_url', process.env.APP_URL);
     app.set('app_key', process.env.APP_KEY);
+    app.set('root_dir', __dirname);
     app.set('port', process.env.PORT || 8080);
     app.set('db', db);
     app.set('view engine', 'ejs');
 
 
     // Add middleware
-    app.use(express.static(__dirname + '/public'));
+    app.use(express.static(path.join(__dirname, '/public')));
     app.use(corsMiddleware());
     app.use('/api/*', express.json());
 
 
-    // Register routes.
+    // Register all app routes.
     routes(app);
 
 
