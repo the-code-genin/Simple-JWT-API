@@ -3,6 +3,7 @@ import 'reflect-metadata'
 import { createConnection } from 'typeorm'
 import express from 'express'
 import corsMiddleware from 'cors'
+import fileUploadMiddleware from 'express-fileupload'
 import routes from './routes'
 import path from 'path'
 
@@ -27,6 +28,7 @@ import path from 'path'
     // Add middleware
     app.use(express.static(path.join(__dirname, '/public')));
     app.use(corsMiddleware());
+    app.use(fileUploadMiddleware());
     app.use('/api/*', express.json());
 
 
