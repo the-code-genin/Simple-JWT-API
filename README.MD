@@ -10,7 +10,7 @@ If you appreciate the project, remember to leave a star! Thank you.
 
 Contributions are always welcomed!
 
-Developed and maintained by [Mohammed Adekunle](https://github.com/Iyiola-am).
+Developed and maintained by [Mohammed Adekunle](https://mohammedadekunle.com.ng).
 
 ## Requirements
 
