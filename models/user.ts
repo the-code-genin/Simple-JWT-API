@@ -2,7 +2,7 @@ import { PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, Column, Ent
 import UserAuthToken from './user_auth_token';
 
 @Entity('users')
-export default class User extends BaseEntity implements Serializable {
+export default class User extends BaseEntity {
     @PrimaryGeneratedColumn('increment')
     // @ts-ignore
     id: number;
