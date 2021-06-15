@@ -25,7 +25,7 @@ export default class AuthController {
                 }
             });
         } catch(e) {
-            res.json(AuthenticationError(e.message));
+            res.json(AuthenticationError((e as Error).message));
         }
     }
 
@@ -71,7 +71,7 @@ export default class AuthController {
                 }
             });
         } catch(e) {
-            res.json(ServerError(e.message));
+            res.json(ServerError((e as Error).message));
         }
     }
 
@@ -130,7 +130,7 @@ export default class AuthController {
                 }
             });
         } catch(e) {
-            res.json(AuthenticationError(e.message));
+            res.json(AuthenticationError((e as Error).message));
         }
     }
 }
