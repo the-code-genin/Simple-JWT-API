@@ -30,6 +30,6 @@ export default async function AuthMiddleware(req: Request, res: Response, next: 
         req.app.set('authUser', user);
         next();
     } catch(e) {
-        res.json(AuthenticationError(e.message));
+        res.json(AuthenticationError((e as Error).message));
     }
 }
