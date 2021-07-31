@@ -9,5 +9,4 @@ export default (app: Application) => {
     app.post('/api/v1/auth/login', AuthValidator.login, AuthController.login);
     app.post('/api/v1/auth/signup', AuthValidator.signup, AuthController.signup);
     app.post('/api/v1/auth/logout', AuthMiddleware, AuthController.logout);
-    app.post('/api/v1/auth/refresh', AuthMiddleware, AuthController.refresh);
 };
