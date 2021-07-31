@@ -1,12 +1,12 @@
 {
-  "name": "simple-jwt-api",
-  "version": "2.0.0",
-  "description": "A simple API that uses JWT for token authentication. Written in Typescript.",
+  "name": "simple-jwt-api-mysql",
+  "version": "3.0.0",
+  "description": "A simple JWT API that uses a mysql compatible database for data storage by default. Written in Typescript.",
   "main": "index.ts",
   "scripts": {
     "test": "ts-mocha tests/*.test.ts",
-    "serve": "nodemon index.ts",
-    "build": "tsc index.ts",
+    "dev": "nodemon index.ts",
+    "start": "ts-node index.ts",
     "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js"
   },
   "author": "Mohammed Adekunle",
@@ -29,7 +29,6 @@
     "@types/ejs": "^3.0.5",
     "@types/expect": "^24.3.0",
     "@types/express": "^4.17.9",
-    "@types/express-fileupload": "^1.1.6",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/mocha": "^8.2.0",
     "@types/node": "^14.14.19",
