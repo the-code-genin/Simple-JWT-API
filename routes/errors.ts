@@ -18,13 +18,13 @@ export default (app: Application) => {
     // General 404 page
     app.use((req: Request, res: Response, next: NextFunction) => {
         res.status(404);
-        res.render('404');
+        res.render('404.twig');
     });
 
     // General 500 page
     app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
         console.error(err.stack);
         res.status(500);
-        res.render('500');
+        res.render('500.twig');
     });
 }
