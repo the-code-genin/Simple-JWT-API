@@ -1,10 +1,5 @@
-import jwt from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 import User from '../models/user';
-
-export interface JWTData {
-    iss: string,
-    sub: number
-};
 
 export default class JWT {
     /**
@@ -12,8 +7,8 @@ export default class JWT {
      */
     static verifyAccessToken(token: string): number | null {
         try {
-            let payload = jwt.verify(token, String(process.env.APP_KEY)) as JWTData;
-            return payload.sub;
+            let payload = jwt.verify(token, String(process.env.APP_KEY)) as JwtPayload;
+            return Number(payload.sub);
         } catch (e) {
             return null;
         }
@@ -23,9 +18,9 @@ export default class JWT {
      * Generate access token from a user instance
      */
     static generateAccessToken(user: User): string {
-        let data: JWTData = {
+        let data: JwtPayload = {
             iss: String(process.env.APP_URL),
-            sub: user.id
+            sub: String(user.id)
         };
 
         return jwt.sign(data, String(process.env.APP_KEY));
