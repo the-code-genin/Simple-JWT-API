@@ -1,14 +1,15 @@
 import dotenv from 'dotenv'
 import 'reflect-metadata'
-import { createConnection } from 'typeorm'
-import express from 'express'
-import corsMiddleware from 'cors'
-import routes from './routes'
-import path from 'path'
+import { createConnection } from 'typeorm';
+import express from 'express';
+import corsMiddleware from 'cors';
+import routes from './routes';
+import path from 'path';
+import 'twig';
 
 process.on('SIGINT', () => process.exit());
 
-(async function() {
+(async function () {
     // Load env variables.
     dotenv.config();
 
@@ -22,7 +23,7 @@ process.on('SIGINT', () => process.exit());
     app.set('root_dir', __dirname);
     app.set('port', process.env.PORT || 8080);
     app.set('db', db);
-    app.set('view engine', 'ejs');
+    app.set('view engine', 'twig');
 
 
     // Add middleware
