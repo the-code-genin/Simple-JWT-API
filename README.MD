@@ -25,7 +25,7 @@ Developed and maintained by [Mohammed Adekunle](https://mohammedadekunle.com.ng)
 - Written completely in [Typescript](https://www.typescriptlang.org/).
 - [JWT](https://jwt.io/) authentication endpoints out of the box for SPAs and mobile apps.
 - [Mocha](https://mochajs.org/) for testing.
-- [EJS](https://ejs.co/) for view templating.
+- [Twig](https://github.com/twigjs/twig.js) for view templating.
 - A well defined directory structure.
 
 # How To Install
