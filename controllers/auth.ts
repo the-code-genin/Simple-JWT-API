@@ -10,48 +10,54 @@ export default class AuthController {
      * Generate JWT token for a user upon successful credential validation
      */
     static async login(req: Request, res: Response) {
+        let user: User | undefined;
+
         try {
-            let user = await User.findOne({where: {email: req.body.email}});
+            user = await User.findOne({ where: { email: req.body.email } });
             if (user == null) {
                 throw new Error("Email and password combination do not match a user in our system.");
-            } else if (!await bcrypt.compare(req.body.password, user.password)) {
+            } else if (!await bcrypt.compare(req.body.password, String(user.password))) {
                 throw new Error("Email and password combination do not match a user in our system.");
             }
-    
-            res.status(200).json({
-                success: true,
-                payload: {
-                    data: user.toJSON(),
-                    access_token: JWT.generateAccessToken(user),
-                    token_type: 'bearer'
-                }
-            });
-        } catch(e) {
+        } catch (e) {
             res.status(401).json(AuthenticationError((e as Error).message));
+            return;
         }
+
+        res.status(200).json({
+            success: true,
+            payload: {
+                data: user.toJSON(),
+                access_token: JWT.generateAccessToken(user),
+                token_type: 'bearer'
+            }
+        });
     }
 
     /**
      * Sign a user up and generate the initial JWT auth token
      */
     static async signup(req: Request, res: Response) {
+        let user: User | undefined;
+
         try {
-            let user = new User;
+            user = new User;
             user.email = req.body.email;
             user.password = await bcrypt.hash(req.body.password, 10);
             user = await user.save();
-
-            res.status(201).json({
-                success: true,
-                payload: {
-                    data: user.toJSON(),
-                    access_token: JWT.generateAccessToken(user),
-                    token_type: 'bearer'
-                }
-            });
-        } catch(e) {
+        } catch (e) {
             res.status(500).json(ServerError((e as Error).message));
+            return;
         }
+
+        res.status(201).json({
+            success: true,
+            payload: {
+                data: user.toJSON(),
+                access_token: JWT.generateAccessToken(user),
+                token_type: 'bearer'
+            }
+        });
     }
 
     /**
@@ -68,17 +74,17 @@ export default class AuthController {
             userAuthToken.user = Promise.resolve(req.app.get('authUser') as User);
             userAuthToken.token = token;
             await userAuthToken.save();
-
-
-            res.status(200).json({
-                success: true,
-                payload: {
-                    data: {}
-                }
-            });
-        } catch(e) {
+        } catch (e) {
             res.status(500).json(ServerError((e as Error).message));
+            return;
         }
+
+        res.status(200).json({
+            success: true,
+            payload: {
+                data: {}
+            }
+        });
     }
 
     /**
