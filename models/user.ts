@@ -4,31 +4,26 @@ import UserAuthToken from './user_auth_token';
 @Entity('users')
 export default class User extends BaseEntity {
     @PrimaryGeneratedColumn('increment')
-    // @ts-ignore
-    id: number;
+    id: number | undefined;
 
     @CreateDateColumn()
-    // @ts-ignore
-    created_at: String;
+    created_at: String | undefined;
 
     @UpdateDateColumn()
-    // @ts-ignore
-    updated_at: String;
+    updated_at: String | undefined;
 
-    @Column('varchar', {length: 255})
-    // @ts-ignore
-    email: string;
+    @Column('varchar', { length: 255, unique: true })
+    email: string | undefined;
 
-    @Column('varchar', {length: 255})
-    // @ts-ignore
-    password: string;
+    @Column('varchar', { length: 255 })
+    password: string | undefined;
 
-    @OneToMany(type => UserAuthToken, (userAuthToken: UserAuthToken) => userAuthToken.user)
-    // @ts-ignore
-    userAuthTokens: Promise<UserAuthToken[]>
+    @OneToMany(() => UserAuthToken, (userAuthToken: UserAuthToken) => userAuthToken.user)
+    userAuthTokens: Promise<UserAuthToken[]> | undefined
 
     toJSON() {
-        let data = Object.entries(this).filter(entry => ['password'].indexOf(entry[0]) == -1);
+        const hiddenFields = ['password'];
+        let data = Object.entries(this).filter(entry => hiddenFields.indexOf(entry[0]) == -1);
         return Object.fromEntries(data);
     }
 }

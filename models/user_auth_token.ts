@@ -4,23 +4,18 @@ import User from './user';
 @Entity('user_auth_tokens')
 export default class UserAuthToken extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
-  // @ts-ignore
-  id: number;
+  id: number | undefined;
 
   @CreateDateColumn()
-  // @ts-ignore
-  created_at: String;
+  created_at: String | undefined;
 
   @UpdateDateColumn()
-  // @ts-ignore
-  updated_at: String;
+  updated_at: String | undefined;
 
   @Column('text')
-  // @ts-ignore
-  token: string;
+  token: string | undefined;
 
-  @ManyToOne(type => User)
-  @JoinColumn({name: 'user_id', referencedColumnName: 'id'})
-  // @ts-ignore
-  user: Promise<User>
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
+  @ManyToOne(() => User)
+  user: Promise<User> | undefined
 }
