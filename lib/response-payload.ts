@@ -1,5 +1,5 @@
 export default interface ResponsePayload<T> {
-    data?: T|T[],
+    data?: T,
     total?: number,
     per_page?: number,
     current_page?: number,
