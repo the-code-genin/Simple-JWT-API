@@ -11,7 +11,7 @@ export default function calculatePageOffsetAndLimit(
     }
 
     // Fix per page variable
-    if (perPage < 1) perPage = 1;
+    if (perPage < 1) perPage = 10;
 
     // Get the total number of pages
     let totalPages = Math.ceil(total / perPage);
