@@ -7,10 +7,10 @@ export default class User extends BaseEntity {
     id: number | undefined;
 
     @CreateDateColumn()
-    created_at: String | undefined;
+    created_at: Date | undefined;
 
     @UpdateDateColumn()
-    updated_at: String | undefined;
+    updated_at: Date | undefined;
 
     @Column('varchar', { length: 255, unique: true })
     email: string | undefined;

@@ -7,10 +7,10 @@ export default class UserAuthToken extends BaseEntity {
   id: number | undefined;
 
   @CreateDateColumn()
-  created_at: String | undefined;
+  created_at: Date | undefined;
 
   @UpdateDateColumn()
-  updated_at: String | undefined;
+  updated_at: Date | undefined;
 
   @Column('text')
   token: string | undefined;
