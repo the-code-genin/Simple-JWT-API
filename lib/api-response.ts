@@ -14,5 +14,5 @@ interface ApiResponseFailure {
     }
 }
 
-type ApiResponse = |ApiResponseSuccess|ApiResponseFailure
+type ApiResponse = | ApiResponseSuccess | ApiResponseFailure
 export default ApiResponse;
