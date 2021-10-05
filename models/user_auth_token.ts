@@ -15,6 +15,9 @@ export default class UserAuthToken extends BaseEntity {
   @Column('text')
   token: string | undefined;
 
+  @Column("int")
+  user_id: number | undefined;
+
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   @ManyToOne(() => User)
   user: Promise<User> | undefined
