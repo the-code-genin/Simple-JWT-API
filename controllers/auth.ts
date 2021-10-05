@@ -64,6 +64,8 @@ export default class AuthController {
      * Invalidate a user's auth token
      */
     static async logout(req: Request, res: Response) {
+        const authUser = req.app.get('authUser') as User;
+
         try {
             let matches = /^Bearer (.+)$/i.exec(String(req.get('Authorization'))) as RegExpExecArray;
             let token = matches[1].trim();
@@ -71,7 +73,7 @@ export default class AuthController {
 
             // Add token to list of invalidated tokens.
             let userAuthToken = new UserAuthToken;
-            userAuthToken.user = Promise.resolve(req.app.get('authUser') as User);
+            userAuthToken.user_id = authUser.id;
             userAuthToken.token = token;
             await userAuthToken.save();
         } catch (e) {
