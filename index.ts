@@ -30,12 +30,10 @@ process.on('SIGINT', () => process.exit());
     app.use('/storage', express.static(path.join(__dirname, '/storage/public')));
     app.use(express.static(path.join(__dirname, '/public')));
     app.use(corsMiddleware());
-    app.use('/api/*', express.json());
-
+    app.use('/v1', express.json());
 
     // Register all app routes.
     routes(app);
-
 
     // Start server.
     app.listen(app.get('port'), () => {

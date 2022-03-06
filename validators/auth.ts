@@ -6,9 +6,15 @@ import Joi from 'joi';
 export default class AuthValidator {
     static async login(req: Request, res: Response, next: NextFunction) {
         const schema = Joi.object({
-            email: Joi.string().email().required(),
+            email: Joi.string()
+                .required()
+                .email()
+                .message("Invalid email supplied"),
 
-            password: Joi.string().min(6).required(),
+            password: Joi.string()
+                .required()
+                .min(6)
+                .message("Password is required and must be at least 6 characters long"),
         });
         const validationResult = schema.validate(req.body);
 
@@ -20,9 +26,15 @@ export default class AuthValidator {
 
     static async signup(req: Request, res: Response, next: NextFunction) {
         const schema = Joi.object({
-            email: Joi.string().email().required(),
+            email: Joi.string()
+                .required()
+                .email()
+                .message("Invalid email supplied"),
 
-            password: Joi.string().min(6).required(),
+            password: Joi.string()
+                .required()
+                .min(6)
+                .message("Password is required and must be at least 6 characters long"),
         });
         const validationResult = schema.validate(req.body);
 
