@@ -16,12 +16,13 @@ Developed and maintained by [Mohammed Adekunle](https://mohammedadekunle.com.ng)
 
 - The NodeJS runtime.
 - NPM, Yarn or any similar NodeJS package manager.
-- MySQL or any other supported SQL/NoSQL database(Remember to install the required db driver and configure [TypeORM](https://typeorm.io/)).
+- MySQL or any other supported SQL database.
 
 ## Features
 
 - [Express](https://expressjs.com/) as the base requests router.
-- [TypeORM](https://typeorm.io/) for ORM/query builder and migrations.
+- [Knex](https://knexjs.org/) for query builder and migrations.
+- [Joi](https://joi.dev/) for data validation.
 - Written completely in [Typescript](https://www.typescriptlang.org/).
 - [JWT](https://jwt.io/) authentication endpoints out of the box for SPAs and mobile apps.
 - [Mocha](https://mochajs.org/) for testing.
