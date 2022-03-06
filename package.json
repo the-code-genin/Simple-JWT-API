@@ -16,12 +16,12 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
     "reflect-metadata": "^0.1.13",
     "twig": "^1.15.4",
-    "typeorm": "^0.2.29",
-    "validatorjs": "^3.22.1"
+    "typeorm": "^0.2.29"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
@@ -32,7 +32,6 @@
     "@types/mocha": "^8.2.0",
     "@types/node": "^14.14.19",
     "@types/twig": "^1.12.6",
-    "@types/validatorjs": "^3.15.0",
     "mocha": "^8.2.1",
     "nodemon": "^2.0.6",
     "ts-mocha": "^8.0.0",
