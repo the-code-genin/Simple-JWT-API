@@ -1,36 +1,36 @@
-import ApiResponse from "./api-response";
+import { Response } from "express";
 
-export function ApplicationError(code: number, type: string, message: string): ApiResponse {
-    return {
+export function ApplicationError(res: Response, code: number, type: string, message: string) {
+    return res.status(code).json({
         success: false,
         error: {
             code,
             type,
             message
         }
-    }
+    });
 }
 
-export function InvalidFormDataError(message: string = 'Invalid form data!') {
-    return ApplicationError(400, 'InvalidFormData', message);
+export function InvalidFormDataError(res: Response, message: string = 'Invalid form data!') {
+    return ApplicationError(res, 400, 'InvalidFormData', message);
 }
 
-export function AuthenticationError(message: string = 'User is not Authenticated!') {
-    return ApplicationError(401, 'AuthenticationError', message);
+export function AuthenticationError(res: Response, message: string = 'User is not Authenticated!') {
+    return ApplicationError(res, 401, 'AuthenticationError', message);
 }
 
-export function ForbiddenError(message: string = 'User is forbidden from accessing this resource!') {
-    return ApplicationError(403, 'ForbiddenError', message);
+export function ForbiddenError(res: Response, message: string = 'User is forbidden from accessing this resource!') {
+    return ApplicationError(res, 403, 'ForbiddenError', message);
 }
 
-export function NotFoundError(message: string = 'The resource you were looking for was not found on this server.') {
-    return ApplicationError(404, 'NotFoundError', message);
+export function NotFoundError(res: Response, message: string = 'The resource you were looking for was not found on this server.') {
+    return ApplicationError(res, 404, 'NotFoundError', message);
 }
 
-export function ConflictError(message: string = 'The resource you are trying to create already exists!') {
-    return ApplicationError(409, 'Conflict', message);
+export function ConflictError(res: Response, message: string = 'The resource you are trying to create already exists!') {
+    return ApplicationError(res, 409, 'Conflict', message);
 }
 
-export function ServerError(message: string = 'Server Error!') {
-    return ApplicationError(500, 'ServerError', message);
+export function ServerError(res: Response, message: string = 'Server Error!') {
+    return ApplicationError(res, 500, 'ServerError', message);
 }
