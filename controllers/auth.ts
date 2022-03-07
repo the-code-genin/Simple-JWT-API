@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from 'bcrypt';
 import { AuthenticationError, ServerError } from "../lib/errors";
 import JWT from "../lib/jwt";
-import { getUserByEmail, User, userToJSON } from "../models/users";
+import { getUserByEmail, saveUser, User, userToJSON } from "../models/users";
 
 export default class AuthController {
     static async login(req: Request, res: Response) {
@@ -30,26 +30,24 @@ export default class AuthController {
     }
 
     static async signup(req: Request, res: Response) {
-        // let user: User | undefined;
+        let user: User = {};
 
-        // try {
-        //     user = new User;
-        //     user.email = req.body.email;
-        //     user.password = await bcrypt.hash(req.body.password, 10);
-        //     user = await user.save();
-        // } catch (e) {
-        //     res.status(500).json(ServerError((e as Error).message));
-        //     return;
-        // }
+        try {
+            user.email = req.body.email;
+            user.password = await bcrypt.hash(req.body.password, 10);
+            user = await saveUser(user);
+        } catch (e) {
+            return res.status(500).json(ServerError((e as Error).message));
+        }
 
-        // res.status(201).json({
-        //     success: true,
-        //     payload: {
-        //         data: user.toJSON(),
-        //         access_token: JWT.generateAccessToken(user),
-        //         token_type: 'bearer'
-        //     }
-        // });
+        res.status(201).json({
+            success: true,
+            payload: {
+                data: userToJSON(user),
+                access_token: JWT.generateAccessToken(user),
+                token_type: 'bearer'
+            }
+        });
     }
 
     static async logout(req: Request, res: Response) {
