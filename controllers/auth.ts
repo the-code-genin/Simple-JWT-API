@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import bcrypt from 'bcrypt';
 import { AuthenticationError, ServerError } from "../lib/errors";
 import JWT from "../lib/jwt";
-import { getUserByEmail, saveUser, User, userToJSON } from "../models/users";
+import { addUserAuthToken, getUserByEmail, saveUser, User, userToJSON } from "../models/users";
+import generateSuccessResponse from "../lib/generate-success-response";
 
 export default class AuthController {
     static async login(req: Request, res: Response) {
@@ -19,13 +20,10 @@ export default class AuthController {
             return res.status(401).json(AuthenticationError((e as Error).message));
         }
 
-        res.status(200).json({
-            success: true,
-            payload: {
-                data: userToJSON(user),
-                access_token: JWT.generateAccessToken(user),
-                token_type: 'bearer'
-            }
+        return generateSuccessResponse(res, {
+            data: userToJSON(user),
+            access_token: JWT.generateAccessToken(user),
+            token_type: 'bearer'
         });
     }
 
@@ -40,50 +38,32 @@ export default class AuthController {
             return res.status(500).json(ServerError((e as Error).message));
         }
 
-        res.status(201).json({
-            success: true,
-            payload: {
-                data: userToJSON(user),
-                access_token: JWT.generateAccessToken(user),
-                token_type: 'bearer'
-            }
-        });
+        return generateSuccessResponse(res, {
+            data: userToJSON(user),
+            access_token: JWT.generateAccessToken(user),
+            token_type: 'bearer'
+        }, 201);
     }
 
     static async logout(req: Request, res: Response) {
-        // const authUser = req.app.get('authUser') as User;
+        const authUser = req.app.get('authUser') as User;
 
-        // try {
-        //     let matches = /^Bearer (.+)$/i.exec(String(req.get('Authorization'))) as RegExpExecArray;
-        //     let token = matches[1].trim();
+        try {
+            let matches = /^Bearer (.+)$/i.exec(String(req.get('Authorization'))) as RegExpExecArray;
+            let token = matches[1].trim();
+            await addUserAuthToken(Number(authUser.id), token);
+        } catch (e) {
+            return res.status(500).json(ServerError((e as Error).message));
+        }
 
-
-        //     // Add token to list of invalidated tokens.
-        //     let userAuthToken = new UserAuthToken;
-        //     userAuthToken.user_id = authUser.id;
-        //     userAuthToken.token = token;
-        //     await userAuthToken.save();
-        // } catch (e) {
-        //     res.status(500).json(ServerError((e as Error).message));
-        //     return;
-        // }
-
-        // res.status(200).json({
-        //     success: true,
-        //     payload: {
-        //         data: {}
-        //     }
-        // });
+        return generateSuccessResponse(res, {});
     }
 
     static async getMe(req: Request, res: Response) {
         const user = req.app.get('authUser') as User;
 
-        res.json({
-            success: true,
-            payload: {
-                data: userToJSON(user)
-            }
+        return generateSuccessResponse(res, {
+            data: userToJSON(user)
         });
     }
 }
