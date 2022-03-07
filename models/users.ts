@@ -30,4 +30,17 @@ export async function getUserByEmail(email: string) {
         .first();
 }
 
+export async function getUserByID(id: number) {
+    return global.db<User>("users")
+        .where("id", id)
+        .first();
+}
+
+export async function saveUser(user: User) {
+    const insertId = await global.db<User>("users")
+        .insert(user);
+    if (insertId.length != 1) throw new Error("An error occured while creating the user");
+    return getUserByID(insertId[0]) as User;
+}
+
 export default () => global.db<User>("users");
