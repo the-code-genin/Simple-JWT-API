@@ -1,5 +1,4 @@
-FROM node:current-alpine3.13
-RUN apk add --update npm
+FROM node:16
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
