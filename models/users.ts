@@ -22,4 +22,8 @@ export async function getUsersCountWithEmail(email: string) {
     return Number((await users.where("email", email).count("*", {as: "total"}))[0].total);
 }
 
+export async function getUserByEmail(email: string) {
+    return users.where("email", email).first();
+}
+
 export default () => users;
