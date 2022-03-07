@@ -76,12 +76,14 @@ export default class AuthController {
         // });
     }
 
-    static async index(req: Request, res: Response) {
-        // res.json({
-        //     success: true,
-        //     payload: {
-        //         data: (req.app.get('authUser') as User).toJSON()
-        //     }
-        // });
+    static async getMe(req: Request, res: Response) {
+        const user = req.app.get('authUser') as User;
+
+        res.json({
+            success: true,
+            payload: {
+                data: userToJSON(user)
+            }
+        });
     }
 }
