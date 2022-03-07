@@ -2,26 +2,26 @@ import { Request, Response } from "express";
 import bcrypt from 'bcrypt';
 import { AuthenticationError, ServerError } from "../lib/errors";
 import JWT from "../lib/jwt";
-import { addUserAuthToken, getUserByEmail, saveUser, User, userToJSON } from "../models/users";
-import generateSuccessResponse from "../lib/generate-success-response";
+import Users, { User } from "../models/users";
+import SuccessResponse from "../lib/success-response";
 
 export default class AuthController {
     static async login(req: Request, res: Response) {
         let user: User | undefined;
 
         try {
-            user = await getUserByEmail(req.body.email);
+            user = await Users.getUserByEmail(req.body.email);
             if (user == null) {
                 throw new Error("Email and password combination do not match a user in our system.");
             } else if (!await bcrypt.compare(req.body.password, String(user.password))) {
                 throw new Error("Email and password combination do not match a user in our system.");
             }
         } catch (e) {
-            return res.status(401).json(AuthenticationError((e as Error).message));
+            return AuthenticationError(res, (e as Error).message);
         }
 
-        return generateSuccessResponse(res, {
-            data: userToJSON(user),
+        return SuccessResponse(res, {
+            data: Users.toJSON(user),
             access_token: JWT.generateAccessToken(user),
             token_type: 'bearer'
         });
@@ -33,13 +33,13 @@ export default class AuthController {
         try {
             user.email = req.body.email;
             user.password = await bcrypt.hash(req.body.password, 10);
-            user = await saveUser(user);
+            user = await Users.save(user);
         } catch (e) {
-            return res.status(500).json(ServerError((e as Error).message));
+            return ServerError(res, (e as Error).message);
         }
 
-        return generateSuccessResponse(res, {
-            data: userToJSON(user),
+        return SuccessResponse(res, {
+            data: Users.toJSON(user),
             access_token: JWT.generateAccessToken(user),
             token_type: 'bearer'
         }, 201);
@@ -51,19 +51,19 @@ export default class AuthController {
         try {
             let matches = /^Bearer (.+)$/i.exec(String(req.get('Authorization'))) as RegExpExecArray;
             let token = matches[1].trim();
-            await addUserAuthToken(Number(authUser.id), token);
+            await Users.addUserAuthToken(Number(authUser.id), token);
         } catch (e) {
-            return res.status(500).json(ServerError((e as Error).message));
+            return ServerError(res, (e as Error).message);
         }
 
-        return generateSuccessResponse(res, {});
+        return SuccessResponse(res, {});
     }
 
     static async getMe(req: Request, res: Response) {
         const user = req.app.get('authUser') as User;
 
-        return generateSuccessResponse(res, {
-            data: userToJSON(user)
+        return SuccessResponse(res, {
+            data: Users.toJSON(user)
         });
     }
 }
