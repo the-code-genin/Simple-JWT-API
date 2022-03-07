@@ -11,6 +11,7 @@ module.exports = {
     },
     migrations: {
         tableName: "migrations",
-        directory: path.resolve(__dirname, "../migrations")
+        directory: path.resolve(__dirname, "../migrations"),
+        disableTransactions: false
     }
 };
