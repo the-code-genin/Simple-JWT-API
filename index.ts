@@ -16,6 +16,7 @@ process.on('SIGINT', () => process.exit());
 
     // Connect to db.
     const db = knex(dbConfig);
+    global.db = db;
 
     // Configure server.
     const app = express();
