@@ -5,7 +5,6 @@ import corsMiddleware from 'cors';
 import routes from './routes';
 import path from 'path';
 import knex from "knex";
-import dbConfig from "./config/db";
 import 'twig';
 
 process.on('SIGINT', () => process.exit());
@@ -15,7 +14,21 @@ process.on('SIGINT', () => process.exit());
     dotenv.config();
 
     // Connect to db.
-    const db = knex(dbConfig);
+    const db = knex({
+        client: 'mysql',
+        connection: {
+            host: String(process.env.MYSQL_HOST),
+            port: Number(process.env.MYSQL_PORT),
+            user: String(process.env.MYSQL_USERNAME),
+            password: String(process.env.MYSQL_PASSWORD),
+            database: String(process.env.MYSQL_DATABASE)
+        },
+        migrations: {
+            tableName: "migrations",
+            directory: path.resolve(__dirname, "./migrations"),
+            disableTransactions: false
+        }
+    });
     global.db = db;
 
     // Configure server.
