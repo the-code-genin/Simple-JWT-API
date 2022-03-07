@@ -1,5 +1,3 @@
-const users = global.db<User>("users");
-
 export interface User {
     id?: number;
     created_at?: Date;
@@ -19,11 +17,17 @@ export function userToJSON(user: User): UserJSON {
 }
 
 export async function getUsersCountWithEmail(email: string) {
-    return Number((await users.where("email", email).count("*", {as: "total"}))[0].total);
+    const total = (await global.db<User>("users")
+        .where("email", email)
+        .count("*", {as: "total"})
+    )[0].total;
+    return Number(total);
 }
 
 export async function getUserByEmail(email: string) {
-    return users.where("email", email).first();
+    return global.db<User>("users")
+        .where("email", email)
+        .first();
 }
 
-export default () => users;
+export default () => global.db<User>("users");
