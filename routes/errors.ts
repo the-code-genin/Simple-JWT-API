@@ -3,11 +3,11 @@ import { NotFoundError, ServerError } from '../lib/errors';
 
 export default (app: Application) => {
     app.use((req: Request, res: Response, next: NextFunction) => {
-        res.status(404).json(NotFoundError());
+        return NotFoundError(res);
     });
 
     app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
         console.error(err.stack);
-        res.status(500).json(ServerError(err.message));
+        return ServerError(res, err.message);
     });
 }
