@@ -18,10 +18,10 @@
     "express": "^4.17.1",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
+    "knex": "^1.0.3",
     "mysql": "^2.18.1",
     "reflect-metadata": "^0.1.13",
-    "twig": "^1.15.4",
-    "typeorm": "^0.2.29"
+    "twig": "^1.15.4"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",

@@ -1,10 +1,11 @@
 import dotenv from 'dotenv'
 import 'reflect-metadata'
-import { createConnection } from 'typeorm';
 import express from 'express';
 import corsMiddleware from 'cors';
 import routes from './routes';
 import path from 'path';
+import knex from "knex";
+import dbConfig from "./config/db";
 import 'twig';
 
 process.on('SIGINT', () => process.exit());
@@ -14,7 +15,7 @@ process.on('SIGINT', () => process.exit());
     dotenv.config();
 
     // Connect to db.
-    const db = await createConnection();
+    const db = knex(dbConfig);
 
     // Configure server.
     const app = express();
