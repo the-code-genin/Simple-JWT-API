@@ -30,6 +30,7 @@ process.on('SIGINT', () => process.exit());
         }
     });
     global.db = db;
+    console.log("Connected to db");
 
     // Configure server.
     const app = express();

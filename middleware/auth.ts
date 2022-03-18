@@ -22,7 +22,7 @@ export default async function AuthMiddleware(req: Request, res: Response, next: 
         user = await Users.getUserByID(id);
         if (user == null) {
             throw new Error('User is not Authenticated.');
-        } else if (await Users.checkUserHasAuthToken(Number(user.id), token)) {
+        } else if (await Users.checkUserHasAuthToken(user.id, token)) {
             throw new Error('Bad/Expired auth token.');
         }
     } catch (e) {

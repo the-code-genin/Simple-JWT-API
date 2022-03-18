@@ -13,7 +13,7 @@ export default class AuthController {
             user = await Users.getUserByEmail(req.body.email);
             if (user == null) {
                 throw new Error("Email and password combination do not match a user in our system.");
-            } else if (!await bcrypt.compare(req.body.password, String(user.password))) {
+            } else if (!await bcrypt.compare(req.body.password, user.password)) {
                 throw new Error("Email and password combination do not match a user in our system.");
             }
         } catch (e) {
@@ -28,12 +28,13 @@ export default class AuthController {
     }
 
     static async signup(req: Request, res: Response) {
-        let user: User = {};
+        let user: User | undefined;
 
         try {
-            user.email = req.body.email;
-            user.password = await bcrypt.hash(req.body.password, 10);
-            user = await Users.save(user);
+            user = await Users.save({
+                email: req.body.email,
+                password: await bcrypt.hash(req.body.password, 10)
+            });
         } catch (e) {
             return ServerError(res, (e as Error).message);
         }

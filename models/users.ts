@@ -1,9 +1,9 @@
 export interface User {
-    id?: number;
-    created_at?: Date;
-    updated_at?: Date;
-    email?: string;
-    password?: string;
+    id: number;
+    created_at: Date;
+    updated_at: Date;
+    email: string;
+    password: string;
 }
 
 export interface UserJSON extends Omit<User, "password"> {
@@ -62,17 +62,17 @@ export default class Users {
         return insertId.length == 1;
     }
 
-    static async save(user: User) {
+    static async save(user: Partial<User>) {
         const insertId = await Users
             .getQueryBuilder()
             .insert(user);
         if (insertId.length != 1) throw new Error("An error occured while creating the user");
-        return Users.getUserByID(insertId[0]) as User;
+        return await Users.getUserByID(insertId[0]) as User;
     }
 
-    static toJSON(user: User): UserJSON {
+    static toJSON(user: User) {
         const hiddenFields = ['password'];
         let data = Object.entries(user).filter(entry => !hiddenFields.includes(entry[0]));
-        return Object.fromEntries(data);
+        return Object.fromEntries(data) as UserJSON;
     }
 }
