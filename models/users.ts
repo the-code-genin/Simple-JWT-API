@@ -62,7 +62,7 @@ export default class Users {
         return insertId.length == 1;
     }
 
-    static async save(user: Partial<User>) {
+    static async insert(user: Partial<User>) {
         const insertId = await Users
             .getQueryBuilder()
             .insert(user);
