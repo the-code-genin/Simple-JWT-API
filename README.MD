@@ -35,7 +35,7 @@ Developed and maintained by [Mohammed Adekunle](https://mohammedadekunle.com.ng)
 - Run `npm install` or `yarn install` to install the app dependencies.
 - Copy the `.env.example` file to `.env`.
 - Update your `.env` file according to your web server's environment.
-- Run `npm run typeorm migration:run` to run all migrations.
+- Run `npm run knex migrate:latest` to run all migrations.
 - Run `npm run dev` to fire up the web server.
 - Build something awesome!
 
