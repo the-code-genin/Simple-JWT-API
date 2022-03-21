@@ -31,7 +31,7 @@ export default class AuthController {
         let user: User | undefined;
 
         try {
-            user = await Users.save({
+            user = await Users.insert({
                 email: req.body.email,
                 password: await bcrypt.hash(req.body.password, 10)
             });
