@@ -70,6 +70,14 @@ export default class Users {
         return await Users.getUserByID(insertId[0]) as User;
     }
 
+    static async updateById(userId: number, user: Partial<User>) {
+        await Users
+            .getQueryBuilder()
+            .where("id", userId)
+            .update(user);
+        return await Users.getUserByID(userId) as User;
+    }
+
     static toJSON(user: User) {
         const hiddenFields = ['password'];
         let data = Object.entries(user).filter(entry => !hiddenFields.includes(entry[0]));
