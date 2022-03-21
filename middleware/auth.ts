@@ -6,7 +6,7 @@ import Users, { User } from '../models/users';
 export default async function AuthMiddleware(req: Request, res: Response, next: NextFunction) {
     let header = req.get('Authorization') as string;
     if (!/^Bearer (.+)$/i.test(header)) { // Bearer token is not present
-        return AuthenticationError(res, "Bad/Expired token.");
+        return AuthenticationError(res, "Bad token.");
     }
 
     // Extract user ID from bearer token
@@ -23,7 +23,7 @@ export default async function AuthMiddleware(req: Request, res: Response, next: 
         if (user == null) {
             throw new Error('User is not Authenticated.');
         } else if (await Users.checkUserHasAuthToken(user.id, token)) {
-            throw new Error('Bad/Expired auth token.');
+            throw new Error('Expired auth token.');
         }
     } catch (e) {
         return AuthenticationError(res, (e as Error).message);
