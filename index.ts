@@ -15,13 +15,14 @@ process.on('SIGINT', () => process.exit());
 
     // Connect to db.
     const db = knex({
-        client: 'mysql',
+        client: 'mysql2',
         connection: {
             host: String(process.env.MYSQL_HOST),
             port: Number(process.env.MYSQL_PORT),
             user: String(process.env.MYSQL_USERNAME),
             password: String(process.env.MYSQL_PASSWORD),
-            database: String(process.env.MYSQL_DATABASE)
+            database: String(process.env.MYSQL_DATABASE),
+            enableKeepAlive: true
         },
         migrations: {
             tableName: "migrations",
