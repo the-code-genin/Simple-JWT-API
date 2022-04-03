@@ -1,5 +1,5 @@
 import jwt, { JwtPayload } from 'jsonwebtoken'
-import { User } from '../database/users';
+import { User } from '../../database/users';
 
 export default class JWT {
     /**
