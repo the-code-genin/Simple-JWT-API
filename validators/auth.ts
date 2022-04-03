@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import Users from '../models/users';
+import Users from '../database/users';
 import { ConflictError, InvalidFormDataError } from '../lib/errors';
 import Joi from 'joi';
 

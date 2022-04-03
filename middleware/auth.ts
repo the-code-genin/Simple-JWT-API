@@ -1,7 +1,7 @@
 import jwt from '../lib/jwt'
 import { AuthenticationError } from '../lib/errors'
 import { NextFunction, Request, Response } from 'express';
-import Users, { User } from '../models/users';
+import Users, { User } from '../database/users';
 
 export default async function AuthMiddleware(req: Request, res: Response, next: NextFunction) {
     let header = req.get('Authorization') as string;
