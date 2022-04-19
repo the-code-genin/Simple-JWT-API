@@ -26,6 +26,6 @@ export default function calculatePageOffsetAndLimit(
     // Response
     return {
         offset,
-        limit: offset + perPage,
+        limit: perPage,
     };
 }
