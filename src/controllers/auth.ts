@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import bcrypt from 'bcrypt';
-import { AuthenticationError, ServerError } from "../lib/responses/errors";
-import JWT from "../lib/helpers/jwt";
+import { AuthenticationError, ServerError, SuccessResponse } from "../responses";
+import JWT from "../helpers/jwt";
 import Users, { User } from "../database/users";
-import SuccessResponse from "../lib/responses/success-response";
 
 export default class AuthController {
     static async login(req: Request, res: Response) {

@@ -1,5 +1,5 @@
 import { Application, NextFunction, Request, Response } from 'express';
-import { NotFoundError, ServerError } from '../lib/responses/errors';
+import { NotFoundError, ServerError } from '../responses';
 
 export default (app: Application) => {
     app.use((req: Request, res: Response, next: NextFunction) => {

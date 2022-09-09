@@ -1,17 +1,21 @@
 {
-    "compilerOptions": {
-      "target": "esnext",
-      "module": "commonjs",
-      "rootDir": "./",
-      "outDir": "./dist",
-      "esModuleInterop": true,
-      "strict": true,
-      "emitDecoratorMetadata": true,
-      "experimentalDecorators": true,
-      "typeRoots": [
-        "./types",
-        "./node_modules/@types"
-      ],
-      "allowJs": true
-    }
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "rootDir": "./src",
+    "outDir": "./build",
+    "esModuleInterop": true,
+    "strict": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "typeRoots": [
+      "./src/types",
+      "./node_modules/@types"
+    ]
+  },
+  "include": [
+    "src/**/*"
+  ]
 }

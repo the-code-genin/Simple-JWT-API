@@ -44,8 +44,6 @@ process.on('SIGINT', () => process.exit());
 
 
     // Add middleware
-    app.use('/storage', express.static(path.join(__dirname, '/storage/public')));
-    app.use(express.static(path.join(__dirname, '/public')));
     app.use(corsMiddleware());
     app.use(express.json());
 
