@@ -1,5 +1,5 @@
-import { Application, NextFunction, Request, Response } from 'express';
-import { NotFoundError, ServerError } from '../responses';
+import { Application, NextFunction, Request, Response } from "express";
+import { NotFoundError, ServerError } from "../responses";
 
 export default (app: Application) => {
     app.use((req: Request, res: Response, next: NextFunction) => {
@@ -10,4 +10,4 @@ export default (app: Application) => {
         console.error(err.stack);
         return ServerError(res, err.message);
     });
-}
+};

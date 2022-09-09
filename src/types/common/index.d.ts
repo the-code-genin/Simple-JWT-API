@@ -1,7 +1,7 @@
 import { Knex } from "knex";
 
 declare global {
-    module NodeJS {
+    namespace NodeJS {
         interface Global {
             db: Knex<any, unknown[]>;
         }

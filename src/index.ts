@@ -1,13 +1,13 @@
-import dotenv from 'dotenv'
-import 'reflect-metadata'
-import express from 'express';
-import corsMiddleware from 'cors';
-import routes from './routes';
-import path from 'path';
+import dotenv from "dotenv";
+import "reflect-metadata";
+import express from "express";
+import corsMiddleware from "cors";
+import routes from "./routes";
+import path from "path";
 import knex from "knex";
-import 'twig';
+import "twig";
 
-process.on('SIGINT', () => process.exit());
+process.on("SIGINT", () => process.exit());
 
 (async function () {
     // Load env variables.
@@ -15,7 +15,7 @@ process.on('SIGINT', () => process.exit());
 
     // Connect to db.
     const db = knex({
-        client: 'mysql2',
+        client: "mysql2",
         connection: {
             host: String(process.env.MYSQL_HOST),
             port: Number(process.env.MYSQL_PORT),
@@ -35,12 +35,12 @@ process.on('SIGINT', () => process.exit());
 
     // Configure server.
     const app = express();
-    app.set('app_url', process.env.APP_URL);
-    app.set('app_key', process.env.APP_KEY);
-    app.set('root_dir', __dirname);
-    app.set('port', process.env.PORT || 8080);
-    app.set('db', db);
-    app.set('view engine', 'twig');
+    app.set("app_url", process.env.APP_URL);
+    app.set("app_key", process.env.APP_KEY);
+    app.set("root_dir", __dirname);
+    app.set("port", process.env.PORT || 8080);
+    app.set("db", db);
+    app.set("view engine", "twig");
 
 
     // Add middleware
@@ -51,7 +51,7 @@ process.on('SIGINT', () => process.exit());
     routes(app);
 
     // Start server.
-    app.listen(app.get('port'), () => {
-        console.log(`App running on ${app.get('app_url')}`);
+    app.listen(app.get("port"), () => {
+        console.log(`App running on ${app.get("app_url")}`);
     });
 })();

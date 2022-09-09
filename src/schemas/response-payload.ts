@@ -1,4 +1,4 @@
-export default interface ResponsePayload<T> {
+interface ResponsePayload<T> {
     data?: T,
     total?: number,
     per_page?: number,
@@ -9,3 +9,5 @@ export default interface ResponsePayload<T> {
     to?: number,
     [key: string]: any
 }
+
+export default ResponsePayload;

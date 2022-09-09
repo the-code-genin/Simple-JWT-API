@@ -6,9 +6,7 @@ export interface User {
     password: string;
 }
 
-export interface UserJSON extends Omit<User, "password"> {
-    //
-}
+export type UserJSON = Omit<User, "password">
 
 export default class Users {
     static getQueryBuilder() {
@@ -79,8 +77,8 @@ export default class Users {
     }
 
     static toJSON(user: User) {
-        const hiddenFields = ['password'];
-        let data = Object.entries(user).filter(entry => !hiddenFields.includes(entry[0]));
+        const hiddenFields = ["password"];
+        const data = Object.entries(user).filter(entry => !hiddenFields.includes(entry[0]));
         return Object.fromEntries(data) as UserJSON;
     }
 }

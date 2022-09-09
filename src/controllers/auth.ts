@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
 import { AuthenticationError, ServerError, SuccessResponse } from "../responses";
 import JWT from "../helpers/jwt";
 import Users, { User } from "../database/users";
@@ -22,7 +22,7 @@ export default class AuthController {
         return SuccessResponse(res, {
             data: Users.toJSON(user),
             access_token: JWT.generateAccessToken(user),
-            token_type: 'bearer'
+            token_type: "bearer"
         });
     }
 
@@ -41,16 +41,16 @@ export default class AuthController {
         return SuccessResponse(res, {
             data: Users.toJSON(user),
             access_token: JWT.generateAccessToken(user),
-            token_type: 'bearer'
+            token_type: "bearer"
         }, 201);
     }
 
     static async logout(req: Request, res: Response) {
-        const authUser = req.app.get('authUser') as User;
+        const authUser = req.app.get("authUser") as User;
 
         try {
-            let matches = /^Bearer (.+)$/i.exec(String(req.get('Authorization'))) as RegExpExecArray;
-            let token = matches[1].trim();
+            const matches = /^Bearer (.+)$/i.exec(String(req.get("Authorization"))) as RegExpExecArray;
+            const token = matches[1].trim();
             await Users.addUserAuthToken(Number(authUser.id), token);
         } catch (e) {
             return ServerError(res, (e as Error).message);
@@ -60,7 +60,7 @@ export default class AuthController {
     }
 
     static async getMe(req: Request, res: Response) {
-        const user = req.app.get('authUser') as User;
+        const user = req.app.get("authUser") as User;
 
         return SuccessResponse(res, {
             data: Users.toJSON(user)
