@@ -1,13 +1,15 @@
 {
   "name": "simple-jwt-api-mysql",
-  "version": "3.0.0",
+  "version": "2.0.0",
   "description": "A simple JWT API that uses a mysql compatible database for data storage by default. Written in Typescript.",
   "main": "index.ts",
   "scripts": {
     "test": "ts-mocha tests/*.test.ts",
-    "dev": "nodemon index.ts",
-    "start": "ts-node index.ts",
-    "knex": "npx knex"
+    "dev": "nodemon src/index.ts",
+    "build": "tsc",
+    "start": "node build/index.js",
+    "knex": "npx knex",
+    "lint": "eslint src"
   },
   "author": "Mohammed Adekunle",
   "license": "MIT",
@@ -21,7 +23,7 @@
     "knex": "^1.0.3",
     "mysql2": "^2.3.3",
     "reflect-metadata": "^0.1.13",
-    "twig": "^1.15.4"
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
@@ -31,7 +33,9 @@
     "@types/jsonwebtoken": "^8.5.0",
     "@types/mocha": "^8.2.0",
     "@types/node": "^14.14.19",
-    "@types/twig": "^1.12.6",
+    "@typescript-eslint/eslint-plugin": "^5.36.2",
+    "@typescript-eslint/parser": "^5.36.2",
+    "eslint": "^8.23.0",
     "mocha": "^8.2.1",
     "nodemon": "^2.0.6",
     "ts-mocha": "^8.0.0",
