@@ -19,7 +19,7 @@ export default async function AuthMiddleware(req: Request, res: Response, next: 
     // Get the user
     let user: User | undefined;
     try {
-        user = await Users.getUserByID(id);
+        user = await Users.getUserByID(Number(id));
         if (user == null) {
             throw new Error("User is not Authenticated.");
         } else if (await Users.checkUserHasAuthToken(user.id, token)) {

@@ -1,22 +1,20 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
+import config from "../config";
 import { User } from "../database/users";
 
 export default class JWT {
-    static verifyAccessToken(token: string): number | null {
+    static verifyAccessToken(token: string): string | null {
         try {
-            const payload = jwt.verify(token, String(process.env.APP_KEY)) as JwtPayload;
-            return Number(payload.sub);
+            const payload = jwt.verify(token, config.app.key) as JwtPayload;
+            return payload.sub ?? null;
         } catch (e) {
             return null;
         }
     }
 
     static generateAccessToken(user: User): string {
-        const data: JwtPayload = {
-            iss: String(process.env.APP_URL),
-            sub: String(user.id)
-        };
-
-        return jwt.sign(data, String(process.env.APP_KEY));
+        return jwt.sign({
+            sub: user.id
+        }, config.app.key);
     }
 }
