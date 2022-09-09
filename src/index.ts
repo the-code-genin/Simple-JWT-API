@@ -5,6 +5,7 @@ import corsMiddleware from "cors";
 import routes from "./routes";
 import knex from "knex";
 import "twig";
+import Logger from "./logger";
 
 process.on("SIGINT", () => process.exit());
 
@@ -21,18 +22,20 @@ process.on("SIGINT", () => process.exit());
             enableKeepAlive: true
         }
     });
-    console.log("Connected to db");
+    Logger.debug("Connected to DB");
 
     // Create and configure express router
     const app = express();
     app.use(corsMiddleware());
     app.use(express.json());
+    Logger.debug("Configured router");
 
     // Register all app routes.
     routes(app);
+    Logger.debug("Registered app routes");
 
     // Start server.
     app.listen(config.app.port, () => {
-        console.log(`App running on :${config.app.port}`);
+        Logger.info(`App running on :${config.app.port}`);
     });
 })();
