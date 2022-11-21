@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Users from "../database/users";
-import { ConflictError, InvalidFormDataError } from "../responses";
+import { ConflictError, BadRequestError } from "../responses";
 import Joi from "joi";
 
 export default class AuthValidator {
@@ -19,7 +19,7 @@ export default class AuthValidator {
         const validationResult = schema.validate(req.body);
 
         if (validationResult.error) {
-            return InvalidFormDataError(res, String(validationResult.error));
+            return BadRequestError(res, String(validationResult.error));
         }
 
         next();
@@ -40,7 +40,7 @@ export default class AuthValidator {
         const validationResult = schema.validate(req.body);
 
         if (validationResult.error) {
-            return InvalidFormDataError(res, String(validationResult.error));
+            return BadRequestError(res, String(validationResult.error));
         } else if (await Users.getUsersWithEmailCount(req.body.email) > 0) {
             return ConflictError(res, "This email is not available.");
         }

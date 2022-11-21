@@ -1,19 +1,19 @@
 import jwt from "../helpers/jwt";
-import { AuthenticationError } from "../responses";
+import { BadRequestError } from "../responses";
 import { NextFunction, Request, Response } from "express";
 import Users, { User } from "../database/users";
 
 export default async function AuthMiddleware(req: Request, res: Response, next: NextFunction) {
     const header = req.get("Authorization") as string;
     if (!/^Bearer (.+)$/i.test(header)) { // Bearer token is not present
-        return AuthenticationError(res, "Bad token.");
+        return BadRequestError(res, "Bad token.");
     }
 
     // Extract user ID from bearer token
     const token = (/^Bearer (.+)$/i.exec(header) as string[])[1].trim();
     const id = jwt.verifyAccessToken(token);
     if (!id) { // Invalid Bearer token
-        return AuthenticationError(res, "Bad/Expired token.");
+        return BadRequestError(res, "Bad/Expired token.");
     }
 
     // Get the user
@@ -26,7 +26,7 @@ export default async function AuthMiddleware(req: Request, res: Response, next: 
             throw new Error("Expired auth token.");
         }
     } catch (e) {
-        return AuthenticationError(res, (e as Error).message);
+        return BadRequestError(res, (e as Error).message);
     }
 
     // Pass the user object to the request and execute subsequent requests

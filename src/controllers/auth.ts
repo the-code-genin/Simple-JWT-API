@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
-import { AuthenticationError, ServerError, SuccessResponse } from "../responses";
+import { AuthorizationError, ServerError, SuccessResponse } from "../responses";
 import JWT from "../helpers/jwt";
 import Users, { User } from "../database/users";
 
@@ -16,7 +16,7 @@ export default class AuthController {
                 throw new Error("Email and password combination do not match a user in our system.");
             }
         } catch (e) {
-            return AuthenticationError(res, (e as Error).message);
+            return AuthorizationError(res, (e as Error).message);
         }
 
         return SuccessResponse(res, {
