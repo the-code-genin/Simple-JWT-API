@@ -1,18 +1,18 @@
 interface ApiResponseSuccess {
-    success: true,
+    success: true;
     payload: {
-        [key: string]: any
-    }
+        [key: string]: any;
+    };
 }
 
 interface ApiResponseFailure {
-    success: false,
+    success: false;
     error: {
-        code: number,
-        type: string,
-        message: string
-    }
+        code: number;
+        type: string;
+        message: string;
+    };
 }
 
-type ApiResponse = | ApiResponseSuccess | ApiResponseFailure
+type ApiResponse = ApiResponseSuccess | ApiResponseFailure;
 export default ApiResponse;
