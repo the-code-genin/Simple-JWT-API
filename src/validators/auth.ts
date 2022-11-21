@@ -41,7 +41,7 @@ export default class AuthValidator {
 
         if (validationResult.error) {
             return BadRequestError(res, String(validationResult.error));
-        } else if (await Users.getUsersWithEmailCount(req.body.email) > 0) {
+        } else if (await Users.emailTaken(req.body.email)) {
             return ConflictError(res, "This email is not available.");
         }
 

@@ -13,13 +13,13 @@ export default class Users {
         return global.db<User>("users");
     }
 
-    static async getUsersWithEmailCount(email: string) {
+    static async emailTaken(email: string) {
         const total = (await Users
             .getQueryBuilder()
             .where("email", email)
             .count("*", { as: "total" })
         )[0].total;
-        return Number(total);
+        return Number(total) != 0;
     }
 
     static async getUserByEmail(email: string) {
