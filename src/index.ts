@@ -4,7 +4,6 @@ import express from "express";
 import corsMiddleware from "cors";
 import routes from "./routes";
 import knex from "knex";
-import "twig";
 import Logger from "./logger";
 
 process.on("SIGINT", () => process.exit());
