@@ -1,8 +1,6 @@
-interface ApiResponseSuccess {
+interface ApiResponseSuccess<Payload> {
     success: true;
-    payload: {
-        [key: string]: any;
-    };
+    payload: Payload;
 }
 
 interface ApiResponseFailure {
@@ -14,5 +12,5 @@ interface ApiResponseFailure {
     };
 }
 
-type ApiResponse = ApiResponseSuccess | ApiResponseFailure;
+type ApiResponse<Payload> = ApiResponseSuccess<Payload> | ApiResponseFailure;
 export default ApiResponse;
